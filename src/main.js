@@ -6,15 +6,25 @@ import Vuetify from 'vuetify'
 import App from './App'
 import router from './router'
 import axios from 'axios'
+import { store } from './store/store'
+import moment from 'moment'
 
 Vue.config.productionTip = false
 axios.defaults.baseURL = 'http://localhost:3000'
 
 Vue.use(Vuetify)
+
+Vue.filter('formatTime', (value) => {
+  if (value === '-') {
+    return value
+  }
+  return moment(value).format(`MMM Do 'YY, h a`)
+})
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
 })

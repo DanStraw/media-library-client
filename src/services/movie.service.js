@@ -1,18 +1,28 @@
 import axios from 'axios'
 
 export default {
-  addMovie (movie) {
+  /* eslint-disable-next-line */
+  addMovie(movie) {
     return axios.post('/api/movies', movie).then(res => {
       return res.data
     })
   },
-  getAll () {
+  /* eslint-disable-next-line */
+  getAll() {
     return axios.get('/api/movies').then(res => res.data)
   },
-  findById (movieId) {
+  /* eslint-disable-next-line */
+  findById(movieId) {
     return axios.get('/api/movies/' + movieId).then(res => res.data)
   },
-  deleteOne (id) {
+  /* eslint-disable-next-line */
+  incrementViews(id) {
+    return axios.put('/api/movies/' + id).then(res => {
+      return res.data
+    })
+  },
+  /* eslint-disable-next-line */
+  deleteOne(id) {
     return axios.delete('/api/movies/' + id).then(res => {
       return res.data
     })
