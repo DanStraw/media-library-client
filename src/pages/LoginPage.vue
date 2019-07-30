@@ -27,6 +27,9 @@
               label="Password"
               required
               v-model="returningUser.password"
+              :type="passwordVisibility.type"
+              :append-icon="passwordVisibility.icon"
+              @click:append="togglePasswordVisibilty"
             ></v-text-field>
             <v-layout
               justify-space-between
@@ -71,12 +74,20 @@ export default {
     handleUserLogin(e) {
       e.preventDefault()
       this.$store.dispatch('loginUser')
+    },
+    /* eslint-disable-next-line */
+    togglePasswordVisibilty () {
+      this.$store.dispatch('togglePasswordVisibility')
     }
   },
   computed: {
     /* eslint-disable-next-line */
     returningUser() {
       return this.$store.getters.newUser
+    },
+    /* eslint-disable-next-line */
+    passwordVisibility () {
+      return this.$store.getters.passwordFieldSettings
     }
   }
 }

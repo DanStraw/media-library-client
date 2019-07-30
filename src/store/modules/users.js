@@ -10,7 +10,11 @@ const state = {
     password: '',
     passwordConfirm: ''
   },
-  user: {}
+  user: {},
+  passwordField: {
+    icon: 'visibility',
+    type: 'password'
+  }
 }
 
 const mutations = {
@@ -29,9 +33,12 @@ const mutations = {
     })
   },
   /* eslint-disable-next-line */
-  'GET_USER'(state) {
+  'GET_USER'(state, mediaType) {
     const user = JSON.parse(localStorage.getItem('mml_user'))
-    userService.getUser(user._id).then(res => {
+    if (!user) {
+      return
+    }
+    userService.getUser(user._id, mediaType).then(res => {
       state.user = res.data
     })
   },
@@ -73,6 +80,10 @@ const mutations = {
     userService.incrementMovieViewCount(JSON.parse(localStorage.getItem('mml_user')), value).then(res => {
       state.user = res.data
     })
+  },
+  'TOGGLE_PASSWORD_VIEW' (state) {
+    state.passwordField.type = state.passwordField.type === 'password' ? 'text' : 'password'
+    state.passwordField.icon = state.passwordField.icon === 'visibility' ? 'visibility_off' : 'visibility'
   }
 }
 
@@ -82,8 +93,8 @@ const actions = {
     commit('CREATE_USER')
   },
   /* eslint-disable-next-line */
-  getUser: ({ commit }) => {
-    commit('GET_USER')
+  getUser: ({ commit }, payload) => {
+    commit('GET_USER', payload)
   },
   /* eslint-disable-next-line */
   loginUser: ({ commit }) => {
@@ -95,13 +106,17 @@ const actions = {
   },
   incrementViewCount: ({ commit }, payload) => {
     commit('INCREMENT_VIEW_COUNT', payload)
+  },
+  togglePasswordVisibility: ({ commit }) => {
+    commit('TOGGLE_PASSWORD_VIEW')
   }
 }
 
 const getters = {
   newUser: state => state.newUser,
   user: state => state.user,
-  userMovies: state => state.user.movies
+  userMovies: state => state.user.movies,
+  passwordFieldSettings: state => state.passwordField
 }
 export const users = {
   state,

@@ -14,8 +14,8 @@ export default {
     return axios.post('/api/user/logout', user)
   },
   /* eslint-disable-next-line */
-  getUser(id) {
-    return axios.get('/api/users/' + id)
+  getUser(id, mediaType) {
+    return axios.get(`/api/users/${id}/${mediaType}`)
   },
   /* eslint-disable-next-line */
   incrementMovieViewCount(user, movieId) {

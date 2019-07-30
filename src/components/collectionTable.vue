@@ -48,11 +48,11 @@
 
 <script>
 export default {
-  props: ['headerInfo', 'rowItems'],
+  props: ['headerInfo', 'rowItems', 'countType'],
   methods: {
     /* eslint-disable-next-line */
     incrementOne(id) {
-      this.$store.dispatch('incrementViewCount', id)
+      this.$store.dispatch(`increment${this.countType}Count`, id)
     }
   }
 }

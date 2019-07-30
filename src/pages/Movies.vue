@@ -78,6 +78,7 @@ export default {
   /* eslint-disable-next-line */
   beforeMount() {
     this.$store.dispatch('getAllMovies')
+    this.$store.dispatch('getUser', 'movies')
   }
 }
 </script>

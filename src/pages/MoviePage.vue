@@ -84,9 +84,9 @@
 </template>
 
 <script>
-import movieService from '../services/movie.service'
-import moment from 'moment'
-const MovieDB = require('moviedb')(process.env.MOVIEDB_API_KEY)
+// import movieService from '../services/movie.service'
+// import moment from 'moment'
+// const MovieDB = require('moviedb')(process.env.MOVIEDB_API_KEY)
 export default {
   /* eslint-disable no-console */
   components: {},
@@ -109,22 +109,22 @@ export default {
   },
   /* eslint-disable-next-line */
   beforeCreate() {
-    movieService.findById(this.$route.params.movieID).then(movie => {
-      this.movie = movie
-      if (this.movie.timesViewed === 0) {
-        this.movie.updatedAt = '-'
-      } else {
-        this.movie.updatedAt = moment(this.movie.updatedAt).format(
-          'MMM DD YY, h a'
-        )
-      }
-      MovieDB.movieInfo({ id: movie.movieDBID }, (err, res) => {
-        if (err) {
-          return console.log(err)
-        }
-        this.details = res
-      })
-    })
+    // movieService.findById(this.$route.params.movieID).then(movie => {
+    //   this.movie = movie
+    //   if (this.movie.timesViewed === 0) {
+    //     this.movie.updatedAt = '-'
+    //   } else {
+    //     this.movie.updatedAt = moment(this.movie.updatedAt).format(
+    //       'MMM DD YY, h a'
+    //     )
+    //   }
+    //   MovieDB.movieInfo({ id: movie.movieDBID }, (err, res) => {
+    //     if (err) {
+    //       return console.log(err)
+    //     }
+    //     this.details = res
+    //   })
+    // })
   },
   methods: {}
 }

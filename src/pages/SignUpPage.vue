@@ -42,11 +42,19 @@
               label="Password"
               required
               v-model="getNewUser.password"
+              name="password"
+              :type="passwordVisibility.type"
+              :append-icon="passwordVisibility.icon"
+              @click:append="togglePasswordVisibilty"
             ></v-text-field>
             <v-text-field
               label="Confirm Password"
               required
+              name="passwordConfirm"
               v-model="getNewUser.passwordConfirm"
+              :type="passwordVisibility.type"
+              :append-icon="passwordVisibility.icon"
+              @click:append="togglePasswordVisibilty"
             ></v-text-field>
             <v-layout
               justify-space-between
@@ -98,12 +106,20 @@ export default {
         return alert('Confirm Password Does Not Match')
       }
       this.$store.dispatch('handleUserCreate')
+    },
+    /* eslint-disable-next-line */
+    togglePasswordVisibilty () {
+      this.$store.dispatch('togglePasswordVisibility')
     }
   },
   computed: {
     /* eslint-disable-next-line */
     getNewUser() {
       return this.$store.getters.newUser
+    },
+    /* eslint-disable-next-line */
+    passwordVisibility () {
+      return this.$store.getters.passwordFieldSettings
     }
   }
 }
