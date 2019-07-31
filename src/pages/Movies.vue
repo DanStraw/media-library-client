@@ -13,7 +13,7 @@
         <collection-table
           :headerInfo="$store.state.movies.movieTableHeaders"
           :rowItems="userMovies"
-          countType="view"
+          countType="View"
           mediaType="Movie"
         ></collection-table>
       </v-flex>

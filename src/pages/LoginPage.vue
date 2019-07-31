@@ -24,13 +24,18 @@
               v-model="returningUser.email"
             ></v-text-field>
             <v-text-field
+              :type="passwordVisibility.type"
               label="Password"
               required
               v-model="returningUser.password"
-              :type="passwordVisibility.type"
-              :append-icon="passwordVisibility.icon"
-              @click:append="togglePasswordVisibilty"
-            ></v-text-field>
+            >
+              <template v-slot:append>
+                <v-icon
+                  @mousedown="togglePasswordVisibilty"
+                  @mouseup="togglePasswordVisibilty"
+                >{{ passwordVisibility.icon }}</v-icon>
+              </template>
+            </v-text-field>
             <v-layout
               justify-space-between
               row
@@ -76,7 +81,7 @@ export default {
       this.$store.dispatch('loginUser')
     },
     /* eslint-disable-next-line */
-    togglePasswordVisibilty () {
+    togglePasswordVisibilty() {
       this.$store.dispatch('togglePasswordVisibility')
     }
   },
@@ -86,7 +91,7 @@ export default {
       return this.$store.getters.newUser
     },
     /* eslint-disable-next-line */
-    passwordVisibility () {
+    passwordVisibility() {
       return this.$store.getters.passwordFieldSettings
     }
   }

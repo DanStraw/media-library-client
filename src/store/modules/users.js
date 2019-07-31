@@ -77,9 +77,8 @@ const mutations = {
   },
   /* eslint-disable-next-line */
   'INCREMENT_VIEW_COUNT'(state, value) {
-    userService.incrementMovieViewCount(JSON.parse(localStorage.getItem('mml_user')), value).then(res => {
-      state.user = res.data
-    })
+    userService.incrementMovieViewCount(JSON.parse(localStorage.getItem('mml_user')), value)
+      .then(() => this.dispatch('getUser', 'movies'))
   },
   /* eslint-disable-next-line */
   'DELETE_MOVIE'(state, payload) {
