@@ -7,7 +7,6 @@ const state = {
     title: '',
     format: ''
   },
-  movies: [],
   movieTableHeaders: [
     { text: 'Title', value: 'title' },
     { text: 'Format', value: 'format' },
@@ -16,14 +15,6 @@ const state = {
     { text: 'Add Viewing', value: 'view' },
     { text: 'Delete', value: 'delete' }
   ],
-  pagination: {
-    descending: false,
-    page: 1,
-    rowsPerPage: 5,
-    sortBy: 'title',
-    totalItems: 0,
-    rowsPerPageItems: [5, 10, 20]
-  },
   movieDialog: false,
   movieFormDetails: {
     header: 'Movie',
@@ -41,8 +32,8 @@ const state = {
       }
     ],
     submitAction: 'handleMovieSubmit',
-    autoCompleteAction: 'handleMovieAutoComplete',
-    autoCompleteSuggestions: []
+    datalistAction: 'handleMovieDatalist',
+    datalistItems: []
   }
 }
 
@@ -69,24 +60,14 @@ const mutations = {
         }).then(res => {
           state.dialog = false
         }).then(res => {
-          this.dispatch('getUser')
+          this.dispatch('getUser', 'movies')
         })
       })
     })
   },
   /* eslint-disable-next-line */
-  'GET_ALL_MOVIES'(state) {
-    movieService.getAll().then(movies => {
-      state.movies = movies
-    })
-  },
-  /* eslint-disable-next-line */
-  'SET_PAGINATION'(state, value) {
-    state.pagination = value
-  },
-  /* eslint-disable-next-line */
-  'MOVIE_AUTOCOMPLETE'(state) {
-    state.movieFormDetails.autoCompleteSuggestions = []
+  'MOVIE_DATALIST'(state) {
+    state.movieFormDetails.datalistItems = []
     if (state.newMovie.title.length < 3) {
       return console.log('query too short')
     }
@@ -97,11 +78,11 @@ const mutations = {
       }
       if (res.results.length < 5) {
         for (let i = 0; i < res.results.length; i++) {
-          state.movieFormDetails.autoCompleteSuggestions.push(res.results[i])
+          state.movieFormDetails.datalistItems.push(res.results[i])
         }
       } else {
         for (let i = 0; i < 5; i++) {
-          state.movieFormDetails.autoCompleteSuggestions.push(res.results[i])
+          state.movieFormDetails.datalistItems.push(res.results[i])
         }
       }
       this.showDatalist = true
@@ -111,16 +92,12 @@ const mutations = {
 
 const actions = {
   /* eslint-disable-next-line */
-  handleMovieSubmit: ({ dispatch, commit }) => {
+  handleMovieSubmit: ({ commit }) => {
     commit('ADD_TO_LIBRARY')
   },
   /* eslint-disable-next-line */
-  getAllMovies: ({ commit }) => {
-    commit('GET_ALL_MOVIES')
-  },
-  /* eslint-disable-next-line */
-  handleMovieAutoComplete: ({ commit }, payload) => {
-    commit('MOVIE_AUTOCOMPLETE', payload)
+  handleMovieDatalist: ({ commit }) => {
+    commit('MOVIE_DATALIST')
   }
 }
 

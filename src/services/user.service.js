@@ -20,5 +20,9 @@ export default {
   /* eslint-disable-next-line */
   incrementMovieViewCount(user, movieId) {
     return axios.patch('/api/users/movieUpdate', { user, movieId })
+  },
+  /* eslint-disable-next-line */
+  deleteUserMovie(token, movieId) {
+    return axios.delete('/api/user/movieDelete', { data: { token, movieId } })
   }
 }

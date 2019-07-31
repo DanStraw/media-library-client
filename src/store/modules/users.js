@@ -81,7 +81,17 @@ const mutations = {
       state.user = res.data
     })
   },
-  'TOGGLE_PASSWORD_VIEW' (state) {
+  /* eslint-disable-next-line */
+  'DELETE_MOVIE'(state, payload) {
+    const token = localStorage.getItem('mml_jwt')
+    const movieId = payload
+    userService.deleteUserMovie(token, movieId)
+      .then(res => {
+        this.dispatch('getUser', 'movies')
+      })
+  },
+  /* eslint-disable-next-line */
+  'TOGGLE_PASSWORD_VIEW'(state) {
     state.passwordField.type = state.passwordField.type === 'password' ? 'text' : 'password'
     state.passwordField.icon = state.passwordField.icon === 'visibility' ? 'visibility_off' : 'visibility'
   }
@@ -109,6 +119,9 @@ const actions = {
   },
   togglePasswordVisibility: ({ commit }) => {
     commit('TOGGLE_PASSWORD_VIEW')
+  },
+  deleteMovie: ({ commit }, payload) => {
+    commit('DELETE_MOVIE', payload)
   }
 }
 
@@ -116,7 +129,20 @@ const getters = {
   newUser: state => state.newUser,
   user: state => state.user,
   userMovies: state => state.user.movies,
-  passwordFieldSettings: state => state.passwordField
+  passwordFieldSettings: state => state.passwordField,
+  recentMovie: state => {
+    let time = 0
+    let recentMovie = {}
+    if (state.user.movies) {
+      state.user.movies.forEach(movie => {
+        if (movie.updated_at > time) {
+          time = movie.updated_at
+          recentMovie = movie
+        }
+      })
+    }
+    return recentMovie
+  }
 }
 export const users = {
   state,

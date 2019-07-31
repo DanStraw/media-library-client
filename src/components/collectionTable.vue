@@ -31,7 +31,7 @@
               <v-icon>add</v-icon>
             </v-btn>
           </td>
-          <td class="text-xs-left px-0">
+          <td class="text-xs-left px-0 td-delete">
             <v-btn
               @click="handleDelete(props.item._id)"
               color="red darken-4"
@@ -48,12 +48,22 @@
 
 <script>
 export default {
-  props: ['headerInfo', 'rowItems', 'countType'],
+  props: ['headerInfo', 'rowItems', 'countType', 'mediaType'],
   methods: {
     /* eslint-disable-next-line */
     incrementOne(id) {
       this.$store.dispatch(`increment${this.countType}Count`, id)
+    },
+    /* eslint-disable-next-line */
+    handleDelete(id) {
+      this.$store.dispatch(`delete${this.mediaType}`, id)
     }
   }
 }
 </script>
+
+<style scoped>
+.td-delete {
+  text-align: center;
+}
+</style>

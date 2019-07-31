@@ -14,6 +14,7 @@
           :headerInfo="$store.state.movies.movieTableHeaders"
           :rowItems="userMovies"
           countType="view"
+          mediaType="Movie"
         ></collection-table>
       </v-flex>
     </v-layout>
@@ -21,7 +22,6 @@
 </template>
 
 <script>
-import movieService from '../services/movie.service'
 import AddForm from '../components/addForm'
 import collectionTable from '../components/collectionTable'
 
@@ -35,29 +35,9 @@ export default {
     AddForm,
     collectionTable
   },
-  methods: {
-    /* eslint-disable-next-line */
-    handleDelete(id) {
-      movieService.deleteOne(id).then(res => {
-        movieService.getAll().then(movies => {
-          this.$set(this, 'movies', movies)
-        })
-      })
-    }
-  },
+  methods: {},
   /* eslint-disable-next-line */
   computed: {
-    /* eslint-disable-next-line */
-    pagination: {
-      /* eslint-disable-next-line */
-      get: function() {
-        return this.$store.getters.pagination
-      },
-      /* eslint-disable-next-line */
-      set: function(value) {
-        this.$store.dispatch('setPagination', value)
-      }
-    },
     /* eslint-disable-next-line */
     getFormDetails() {
       return this.$store.getters.movieFormDetails
@@ -77,38 +57,12 @@ export default {
   },
   /* eslint-disable-next-line */
   beforeMount() {
-    this.$store.dispatch('getAllMovies')
     this.$store.dispatch('getUser', 'movies')
   }
 }
 </script>
 
-<style>
-table {
-  border-collapse: collapse;
-}
-tr.movie {
-  border-radius: 3px;
-  border: 2px solid darkblue;
-  color: darkblue;
-  text-decoration: none;
-  background-color: rgb(211, 211, 211);
-}
-.td-title,
-.td-format,
-.td-edit {
-  border-right: 2px ridge darkblue;
-  padding-left: 5x;
-  padding-right: 5px;
-}
-.td-edit {
-  width: 50px;
-  text-align: center;
-  padding-left: 5px;
-}
-.td-delete {
-  text-align: center;
-}
+<style scoped>
 .v-datatable__actions {
   justify-content: center !important;
 }

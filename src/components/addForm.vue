@@ -35,18 +35,18 @@
                   <v-text-field
                     :label="input.label"
                     :name="input.value"
-                    @keyup="handleAutoComplete(formDetails.autoCompleteAction)"
-                    list="autoCompleteSuggestions"
+                    @keyup="handleDatalist(formDetails.datalistAction)"
+                    list="datalistItems"
                     required
                     v-model="newMedia.title"
                   ></v-text-field>
                   <datalist
-                    id="autoCompleteSuggestions"
-                    v-if="formDetails.autoCompleteSuggestions.length != 0"
+                    id="datalistItems"
+                    v-if="formDetails.datalistItems.length != 0"
                   >
                     <option
                       v-bind:key="suggestion.id"
-                      v-for="suggestion in formDetails.autoCompleteSuggestions"
+                      v-for="suggestion in formDetails.datalistItems"
                     >{{ suggestion.title }}</option>
                   </datalist>
                 </div>
@@ -101,8 +101,8 @@ export default {
       })
     },
     /* eslint-disable-next-line */
-    handleAutoComplete(autoCompleteAction, title) {
-      this.$store.dispatch(autoCompleteAction, title)
+    handleDatalist(datalistAction) {
+      this.$store.dispatch(datalistAction)
     },
     /* eslint-disable-next-line */
     toggleForm() {

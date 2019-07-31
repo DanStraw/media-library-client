@@ -25,8 +25,8 @@
             <v-spacer></v-spacer>
             <v-card-text>
               <ul>
-                <li>{{mostRecentMovie.title}}</li>
-                <li>Viewed: {{mostRecentMovie.updatedAt}}</li>
+                <li>{{recentMovie.itemInfo.title}}</li>
+                <li>Viewed: {{recentMovie.updated_at | formatTime}}</li>
               </ul>
             </v-card-text>
           </v-card>
@@ -53,8 +53,6 @@
 </template>
 
 <script>
-import movieService from '../services/movie.service'
-import moment from 'moment'
 export default {
   /* eslint-disable-next-line */
   data() {
@@ -63,33 +61,20 @@ export default {
       mostRecentMovie: {}
     }
   },
-  methods: {
-    /* eslint-disable-next-line */
-    getRecentView() {
-      let time = 0
-      this.movies.forEach(movie => {
-        if (movie.updatedAt > time) {
-          time = movie.updatedAt
-          this.mostRecentMovie = movie
-        }
-      })
-      this.mostRecentMovie.updatedAt = moment(this.mostRecentMovie).format(
-        'MM DD YY, h a'
-      )
-    }
-  },
+  methods: {},
   computed: {
     /* eslint-disable-next-line */
     user() {
       return this.$store.getters.user
+    },
+    /* eslint-disable-next-line */
+    recentMovie() {
+      return this.$store.getters.recentMovie
     }
   },
   /* eslint-disable-next-line */
   mounted() {
-    movieService.getAll().then(movies => {
-      this.$set(this, 'movies', movies)
-      this.getRecentView()
-    })
+    this.$store.dispatch('getUser', 'all')
   }
 }
 </script>
