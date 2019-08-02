@@ -33,7 +33,8 @@ const state = {
     ],
     submitAction: 'handleMovieSubmit',
     datalistAction: 'handleMovieDatalist',
-    datalistItems: []
+    datalistItems: [],
+    showDatalist: false
   }
 }
 
@@ -85,8 +86,12 @@ const mutations = {
           state.movieFormDetails.datalistItems.push(res.results[i])
         }
       }
-      this.showDatalist = true
+      state.movieFormDetails.showDatalist = true
     })
+  },
+  /* eslint-disable-next-line */
+  'HIDE_MOVIE_DATALIST'(state) {
+    state.movieFormDetails.showDatalist = false
   }
 }
 
@@ -98,6 +103,10 @@ const actions = {
   /* eslint-disable-next-line */
   handleMovieDatalist: ({ commit }) => {
     commit('MOVIE_DATALIST')
+  },
+  /* eslint-disable-next-line */
+  hideMovieDatalist: ({ commit }) => {
+    commit('HIDE_MOVIE_DATALIST')
   }
 }
 

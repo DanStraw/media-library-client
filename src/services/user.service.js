@@ -15,11 +15,11 @@ export default {
   },
   /* eslint-disable-next-line */
   getUser(id, mediaType) {
-    return axios.get(`/api/users/${id}/${mediaType}`)
+    return axios.get(`/api/user/${id}/${mediaType}`)
   },
   /* eslint-disable-next-line */
   incrementMovieViewCount(user, movieId) {
-    return axios.patch('/api/users/movieUpdate', { user, movieId })
+    return axios.put('/api/user/movieUpdate', { user, movieId })
   },
   /* eslint-disable-next-line */
   deleteUserMovie(token, movieId) {

@@ -52,6 +52,7 @@ export default {
   methods: {
     /* eslint-disable-next-line */
     incrementOne(id) {
+      console.log('id:', id)
       this.$store.dispatch(`increment${this.countType}Count`, id)
     },
     /* eslint-disable-next-line */

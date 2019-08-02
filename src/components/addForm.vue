@@ -35,19 +35,22 @@
                   <v-text-field
                     :label="input.label"
                     :name="input.value"
-                    @keyup="handleDatalist(formDetails.datalistAction)"
+                    @keydown.exact="handleDatalist(formDetails.datalistAction)"
+                    autocomplete="off"
                     list="datalistItems"
                     required
                     v-model="newMedia.title"
                   ></v-text-field>
                   <datalist
                     id="datalistItems"
-                    v-if="formDetails.datalistItems.length != 0"
+                    v-if="formDetails.showDatalist"
                   >
-                    <option
-                      v-bind:key="suggestion.id"
-                      v-for="suggestion in formDetails.datalistItems"
-                    >{{ suggestion.title }}</option>
+                    <select @click="hideDatalist">
+                      <option
+                        v-bind:key="suggestion.id"
+                        v-for="suggestion in formDetails.datalistItems"
+                      >{{ suggestion.title }}</option>
+                    </select>
                   </datalist>
                 </div>
                 <v-select
@@ -83,14 +86,14 @@ export default {
   props: {
     formDetails: Object,
     toggle: Boolean,
-    newMedia: Object
+    newMedia: Object,
+    mediaType: String
   },
   /* eslint-disable-next-line */
   data() {
     return {
       dialog: this.toggle,
-      model: null,
-      showDatalist: false
+      model: null
     }
   },
   methods: {
@@ -103,6 +106,10 @@ export default {
     /* eslint-disable-next-line */
     handleDatalist(datalistAction) {
       this.$store.dispatch(datalistAction)
+    },
+    /* eslint-disable-next-line */
+    hideDatalist() {
+      this.$store.dispatch(`hide${this.mediaType}Datalist`)
     },
     /* eslint-disable-next-line */
     toggleForm() {

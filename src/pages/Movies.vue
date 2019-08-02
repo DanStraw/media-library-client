@@ -4,6 +4,7 @@
       :formDetails="getFormDetails"
       :newMedia="getNewMovie"
       :toggle="getDialog"
+      mediaType="Movie"
     ></AddForm>
     <v-layout
       justify-center
