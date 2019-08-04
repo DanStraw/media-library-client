@@ -45,12 +45,11 @@
                     id="datalistItems"
                     v-if="formDetails.showDatalist"
                   >
-                    <select @click="hideDatalist">
-                      <option
-                        v-bind:key="suggestion.id"
-                        v-for="suggestion in formDetails.datalistItems"
-                      >{{ suggestion.title }}</option>
-                    </select>
+                    <option
+                      @click="hideDatalist"
+                      v-bind:key="suggestion.id"
+                      v-for="suggestion in formDetails.datalistItems"
+                    >{{ suggestion.title }}</option>
                   </datalist>
                 </div>
                 <v-select

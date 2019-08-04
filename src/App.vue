@@ -79,7 +79,7 @@ export default {
       links: [
         { text: 'Home', route: '/', icon: 'home' },
         { text: 'Movies', route: '/movies', icon: 'movie' },
-        { text: 'Books', route: '/error', icon: 'book' },
+        { text: 'Books', route: '/books', icon: 'book' },
         { text: 'Games', route: '/error', icon: 'videogame_asset' },
         { text: 'Music', route: '/error', icon: 'library_music' }
       ]

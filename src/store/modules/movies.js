@@ -40,7 +40,7 @@ const state = {
 
 const mutations = {
   /* eslint-disable-next-line */
-  'ADD_TO_LIBRARY'(state) {
+  'ADD_TO_MOVIE_LIBRARY'(state) {
     MovieDB.searchMovie({ query: state.newMovie.title }, (err, res) => {
       if (err) {
         return console.log(err)
@@ -54,15 +54,12 @@ const mutations = {
         token: localStorage.getItem('mml_jwt')
       }
       movieService.addMovie(newMovie).then(res => {
-        movieService.getAll().then(movies => {
-          state.newMovie.title = ''
-          state.newMovie.format = ''
-          state.movies = movies
-        }).then(res => {
-          state.dialog = false
-        }).then(res => {
-          this.dispatch('getUser', 'movies')
-        })
+        state.newMovie.title = ''
+        state.newMovie.format = ''
+      }).then(res => {
+        state.dialog = false
+      }).then(res => {
+        this.dispatch('getUser', 'movies')
       })
     })
   },
@@ -98,7 +95,7 @@ const mutations = {
 const actions = {
   /* eslint-disable-next-line */
   handleMovieSubmit: ({ commit }) => {
-    commit('ADD_TO_LIBRARY')
+    commit('ADD_TO_MOVIE_LIBRARY')
   },
   /* eslint-disable-next-line */
   handleMovieDatalist: ({ commit }) => {

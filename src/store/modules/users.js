@@ -39,6 +39,7 @@ const mutations = {
       return
     }
     userService.getUser(user._id, mediaType).then(res => {
+      console.log('getuser:', res.data)
       state.user = res.data
     })
   },
@@ -128,6 +129,7 @@ const getters = {
   newUser: state => state.newUser,
   user: state => state.user,
   userMovies: state => state.user.movies,
+  userBooks: state => state.user.books,
   passwordFieldSettings: state => state.passwordField,
   recentMovie: state => {
     let time = 0

@@ -14,11 +14,11 @@ axios.defaults.baseURL = 'http://localhost:3000'
 
 Vue.use(Vuetify)
 
-Vue.filter('formatTime', (value) => {
+Vue.filter('formatTime', (value, format) => {
   if (value === '-') {
     return value
   }
-  return moment(value).format(`MMM Do 'YY, h a`)
+  return moment(value).format(format)
 })
 /* eslint-disable no-new */
 new Vue({

@@ -20,8 +20,8 @@
           <td class="text-xs">{{ props.item.format }}</td>
           <td
             class="text-xs"
-          >{{props.item.viewCount == 0 ? '-' : props.item.updated_at | formatTime }}</td>
-          <td class="text-xs">{{ props.item.viewCount }}</td>
+          >{{props.item.viewCount == 0 || props.item.readCount == 0 ? '-' : props.item.updated_at | formatTime(`MMM Do 'YY, h:m a`) }}</td>
+          <td class="text-xs">{{ props.item.viewCount || props.item.readCount }}</td>
           <td class="text-xs-left px-0">
             <v-btn
               @click="incrementOne(props.item._id)"
@@ -52,7 +52,6 @@ export default {
   methods: {
     /* eslint-disable-next-line */
     incrementOne(id) {
-      console.log('id:', id)
       this.$store.dispatch(`increment${this.countType}Count`, id)
     },
     /* eslint-disable-next-line */

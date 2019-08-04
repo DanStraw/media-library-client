@@ -26,7 +26,7 @@
             <v-card-text>
               <ul>
                 <li>{{recentMovie.itemInfo.title}}</li>
-                <li>Viewed: {{recentMovie.updated_at | formatTime}}</li>
+                <li>Viewed: {{recentMovie.updated_at | formatTime(`Do MMM 'YY h:m a`) }}</li>
               </ul>
             </v-card-text>
           </v-card>
