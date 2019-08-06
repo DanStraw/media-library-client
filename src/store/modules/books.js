@@ -1,4 +1,5 @@
 import booksService from '../../services/books.service'
+import userService from '../../services/user.service'
 
 const booksdb = require('google-books-search')
 var options = {
@@ -67,6 +68,15 @@ const mutations = {
     })
   },
   /* eslint-disable-next-line */
+  'INCREMENT_READ_COUNT'(state, bookId) {
+    const user = JSON.parse(localStorage.getItem('mml_user'))
+    const mediaType = 'books'
+    const mediaAction = 'read'
+    userService.updateCount(user, bookId, mediaType, mediaAction).then(res => {
+      this.dispatch('getUser', 'books')
+    })
+  },
+  /* eslint-disable-next-line */
   'BOOK_DATALIST'(state) {
     state.bookFormDetails.datalistItems = []
     if (state.newBook.title.length < 3) {
@@ -95,6 +105,14 @@ const mutations = {
   /* eslint-disable-next-line */
   'HIDE_BOOK_DATALIST'(state) {
     state.bookFormDetails.showDatalist = false
+  },
+  /* eslint-disable-next-line */
+  'DELETE_BOOK'(state, bookId) {
+    const user = this.state.users.user
+    const mediaType = 'books'
+    userService.deleteItem(user, bookId, mediaType).then(res => {
+      this.dispatch('getUser', 'books')
+    })
   }
 }
 
@@ -107,9 +125,15 @@ const actions = {
   handleBookDatalist: ({ commit }) => {
     commit('BOOK_DATALIST')
   },
+  incrementReadCount: ({ commit }, bookId) => {
+    commit('INCREMENT_READ_COUNT', bookId)
+  },
   /* eslint-disable-next-line */
   hideBookDatalist: ({ commit }) => {
     commit('HIDE_BOOK_DATALIST')
+  },
+  deleteBook: ({ commit }, bookId) => {
+    commit('DELETE_BOOK', bookId)
   }
 }
 

@@ -39,7 +39,6 @@ const mutations = {
       return
     }
     userService.getUser(user._id, mediaType).then(res => {
-      console.log('getuser:', res.data)
       state.user = res.data
     })
   },
