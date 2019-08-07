@@ -3,7 +3,6 @@ import axios from 'axios'
 export default {
   /* eslint-disable-next-line */
   addBook(book) {
-    console.log('adding book')
     return axios.post('/api/books', book).then(res => {
       return res.data
     })

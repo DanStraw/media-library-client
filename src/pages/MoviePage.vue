@@ -14,7 +14,7 @@
           xs12
         >
           <div class="caption grey--text">Title</div>
-          <div>{{ movie.title }}</div>
+          <div>{{ movie.itemInfo.title }}</div>
         </v-flex>
         <v-flex
           md6
@@ -28,21 +28,21 @@
           xs12
         >
           <div class="caption grey--text">Last Watched</div>
-          <div>{{ movie.updatedAt }}</div>
+          <div>{{ movie.updated_at | formatTime(`MMM Do 'YY`)}}</div>
         </v-flex>
         <v-flex
           md6
           xs12
         >
           <div class="caption grey--text">Times Watched</div>
-          <div>{{ movie.timesViewed }}</div>
+          <div>{{ movie.viewCount }}</div>
         </v-flex>
         <v-flex
           md6
           xs12
         >
           <div class="caption grey--text">Summary</div>
-          <div>{{ details.overview }}</div>
+          <div>{{ movie.itemInfo.summary }}</div>
         </v-flex>
         <v-flex
           md8
@@ -51,9 +51,9 @@
           <div class="caption grey--text">Poster</div>
           <div>
             <img
-              :src="`http://image.tmdb.org/t/p/w185${details.poster_path}`"
+              :src="`http://image.tmdb.org/t/p/w185${movie.itemInfo.image}`"
               alt
-            >
+            />
           </div>
         </v-flex>
       </v-layout>
@@ -84,95 +84,29 @@
 </template>
 
 <script>
-// import movieService from '../services/movie.service'
-// import moment from 'moment'
-// const MovieDB = require('moviedb')(process.env.MOVIEDB_API_KEY)
 export default {
-  /* eslint-disable no-console */
   components: {},
   /* eslint-disable-next-line */
-  data() {
-    return {
-      movie: null,
-      details: null
-    }
-  },
-  /* eslint-disable-next-line */
-  created() {
-    console.log('created:', this.movie)
-  },
-  /* eslint-disable-next-line */
-  beforeMount() {},
+  beforeCreate() {},
   /* eslint-disable-next-line */
   mounted() {
-    console.log('mounted:', this.movie)
+    this.$store.dispatch('getUser', 'movies')
   },
-  /* eslint-disable-next-line */
-  beforeCreate() {
-    // movieService.findById(this.$route.params.movieID).then(movie => {
-    //   this.movie = movie
-    //   if (this.movie.timesViewed === 0) {
-    //     this.movie.updatedAt = '-'
-    //   } else {
-    //     this.movie.updatedAt = moment(this.movie.updatedAt).format(
-    //       'MMM DD YY, h a'
-    //     )
-    //   }
-    //   MovieDB.movieInfo({ id: movie.movieDBID }, (err, res) => {
-    //     if (err) {
-    //       return console.log(err)
-    //     }
-    //     this.details = res
-    //   })
-    // })
-  },
-  methods: {}
+  methods: {},
+  computed: {
+    /* eslint-disable-next-line */
+    movie() {
+      let movies = this.$store.state.users.user.movies
+      if (movies) {
+        movies = movies.filter(movie => {
+          return movie._id === this.$route.params.movieID
+        })
+        return movies[0]
+      }
+    }
+  }
 }
 </script>
 
 <style>
-.movie-title .is-editing {
-  background-color: #ffffff;
-  color: #000000;
-  padding: 8px;
-  display: inline-block;
-  min-width: 600px;
-}
-.add-new-list .is-editing {
-  background-color: #ffffff;
-  color: #000000;
-  padding: 8px;
-  margin: 0;
-}
-</style>
-
-<style scoped lang="scss">
-.add-new-list {
-  display: inline-block;
-  width: 270px;
-}
-.movie-title {
-  color: #000000;
-  padding: 10px;
-  height: 90px;
-}
-.movie-page-main {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-}
-.movie-format {
-  flex-grow: 1;
-  margin-bottom: 20px;
-  position: relative;
-}
-.movie-format-inner {
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  overflow-x: scroll;
-  position: absolute;
-  white-space: nowrap;
-}
 </style>

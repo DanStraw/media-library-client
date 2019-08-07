@@ -40,6 +40,7 @@ const mutations = {
     }
     userService.getUser(user._id, mediaType).then(res => {
       state.user = res.data
+      return state.user
     })
   },
   /* eslint-disable-next-line */
@@ -76,20 +77,6 @@ const mutations = {
     })
   },
   /* eslint-disable-next-line */
-  'INCREMENT_VIEW_COUNT'(state, value) {
-    userService.incrementMovieViewCount(JSON.parse(localStorage.getItem('mml_user')), value)
-      .then(() => this.dispatch('getUser', 'movies'))
-  },
-  /* eslint-disable-next-line */
-  'DELETE_MOVIE'(state, payload) {
-    const token = localStorage.getItem('mml_jwt')
-    const movieId = payload
-    userService.deleteUserMovie(token, movieId)
-      .then(res => {
-        this.dispatch('getUser', 'movies')
-      })
-  },
-  /* eslint-disable-next-line */
   'TOGGLE_PASSWORD_VIEW'(state) {
     state.passwordField.type = state.passwordField.type === 'password' ? 'text' : 'password'
     state.passwordField.icon = state.passwordField.icon === 'visibility' ? 'visibility_off' : 'visibility'
@@ -113,14 +100,8 @@ const actions = {
   logoutUser: ({ commit }) => {
     commit('LOGOUT_USER')
   },
-  incrementViewCount: ({ commit }, payload) => {
-    commit('INCREMENT_VIEW_COUNT', payload)
-  },
   togglePasswordVisibility: ({ commit }) => {
     commit('TOGGLE_PASSWORD_VIEW')
-  },
-  deleteMovie: ({ commit }, payload) => {
-    commit('DELETE_MOVIE', payload)
   }
 }
 

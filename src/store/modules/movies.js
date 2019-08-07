@@ -1,4 +1,5 @@
 import movieService from '../../services/movie.service'
+import userService from '../../services/user.service'
 
 const MovieDB = require('moviedb')(process.env.MOVIEDB_API_KEY)
 
@@ -89,6 +90,23 @@ const mutations = {
   /* eslint-disable-next-line */
   'HIDE_MOVIE_DATALIST'(state) {
     state.movieFormDetails.showDatalist = false
+  },
+  /* eslint-disable-next-line */
+  'INCREMENT_VIEW_COUNT'(state, movieId) {
+    const user = JSON.parse(localStorage.getItem('mml_user'))
+    const mediaType = 'movies'
+    const mediaAction = 'view'
+    userService.updateCount(user, movieId, mediaType, mediaAction).then(res => {
+      this.dispatch('getUser', 'movies')
+    })
+  },
+  /* eslint-disable-next-line */
+  'DELETE_MOVIE'(state, movieId) {
+    const user = this.state.users.user
+    const mediaType = 'movies'
+    userService.deleteItem(user, movieId, mediaType).then(res => {
+      this.dispatch('getUser', 'movies')
+    })
   }
 }
 
@@ -104,6 +122,12 @@ const actions = {
   /* eslint-disable-next-line */
   hideMovieDatalist: ({ commit }) => {
     commit('HIDE_MOVIE_DATALIST')
+  },
+  incrementViewCount: ({ commit }, movieId) => {
+    commit('INCREMENT_VIEW_COUNT', movieId)
+  },
+  deleteMovie: ({ commit }, movieId) => {
+    commit('DELETE_MOVIE', movieId)
   }
 }
 
