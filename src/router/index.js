@@ -7,6 +7,7 @@ import MoviePage from '@/pages/MoviePage'
 import ErrorPage from '@/pages/Error.vue'
 import SignUpPage from '@/pages/SignUpPage'
 import LoginPage from '@/pages/LoginPage'
+import BookPage from '@/pages/BookPage'
 
 Vue.use(Router)
 
@@ -45,9 +46,17 @@ let router = new Router({
       }
     },
     {
-      path: '/movies/:movieID',
+      path: '/movie/:movieID',
       name: 'MoviePage',
       component: MoviePage,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/book/:bookID',
+      name: 'BookPage',
+      component: BookPage,
       meta: {
         requiresAuth: true
       }

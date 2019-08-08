@@ -1,5 +1,6 @@
 import booksService from '../../services/books.service'
 import userService from '../../services/user.service'
+import { store } from '../store'
 
 const booksdb = require('google-books-search')
 var options = {
@@ -38,7 +39,8 @@ const state = {
     submitAction: 'handleBookSubmit',
     datalistAction: 'handleBookDatalist',
     datalistItems: [],
-    showDatalist: false
+    showDatalist: false,
+    bookID: null
   }
 }
 
@@ -113,34 +115,49 @@ const mutations = {
     userService.deleteItem(user, bookId, mediaType).then(res => {
       this.dispatch('getUser', 'books')
     })
+  },
+  /* eslint-disable-next-line */
+  'SET_BOOK_ID'(state, bookID) {
+    state.bookID = bookID
   }
 }
 
 const actions = {
-  /* eslint-disable-next-line */
   handleBookSubmit: ({ commit }) => {
     commit('ADD_TO_BOOK_LIBRARY')
   },
-  /* eslint-disable-next-line */
   handleBookDatalist: ({ commit }) => {
     commit('BOOK_DATALIST')
   },
   incrementReadCount: ({ commit }, bookId) => {
     commit('INCREMENT_READ_COUNT', bookId)
   },
-  /* eslint-disable-next-line */
   hideBookDatalist: ({ commit }) => {
     commit('HIDE_BOOK_DATALIST')
   },
   deleteBook: ({ commit }, bookId) => {
     commit('DELETE_BOOK', bookId)
+  },
+  setBookID: ({ commit }, bookID) => {
+    commit('SET_BOOK_ID', bookID)
   }
 }
 
 const getters = {
   bookFormDetails: state => state.bookFormDetails,
   newBook: state => state.newBook,
-  bookDialog: state => state.bookDialog
+  bookDialog: state => state.bookDialog,
+  book: (state) => {
+    console.log(store.state.users.user)
+    let books = store.state.users.user.books
+    console.log('books:', books)
+    if (books) {
+      books = books.filter(book => {
+        return book._id === state.bookID
+      })
+      return books[0]
+    }
+  }
 }
 
 export const books = {

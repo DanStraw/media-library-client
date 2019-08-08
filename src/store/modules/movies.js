@@ -1,5 +1,6 @@
 import movieService from '../../services/movie.service'
 import userService from '../../services/user.service'
+import { store } from '../store'
 
 const MovieDB = require('moviedb')(process.env.MOVIEDB_API_KEY)
 
@@ -35,7 +36,8 @@ const state = {
     submitAction: 'handleMovieSubmit',
     datalistAction: 'handleMovieDatalist',
     datalistItems: [],
-    showDatalist: false
+    showDatalist: false,
+    movieID: null
   }
 }
 
@@ -107,19 +109,20 @@ const mutations = {
     userService.deleteItem(user, movieId, mediaType).then(res => {
       this.dispatch('getUser', 'movies')
     })
+  },
+  /* eslint-disable-next-line */
+  'SET_MOVIE_ID'(state, movieID) {
+    state.movieID = movieID
   }
 }
 
 const actions = {
-  /* eslint-disable-next-line */
   handleMovieSubmit: ({ commit }) => {
     commit('ADD_TO_MOVIE_LIBRARY')
   },
-  /* eslint-disable-next-line */
   handleMovieDatalist: ({ commit }) => {
     commit('MOVIE_DATALIST')
   },
-  /* eslint-disable-next-line */
   hideMovieDatalist: ({ commit }) => {
     commit('HIDE_MOVIE_DATALIST')
   },
@@ -128,13 +131,25 @@ const actions = {
   },
   deleteMovie: ({ commit }, movieId) => {
     commit('DELETE_MOVIE', movieId)
+  },
+  setMovieID: ({ commit }, movieID) => {
+    commit('SET_MOVIE_ID', movieID)
   }
 }
 
 const getters = {
   movieFormDetails: state => state.movieFormDetails,
   newMovie: state => state.newMovie,
-  movieDialog: state => state.movieDialog
+  movieDialog: state => state.movieDialog,
+  movie: state => {
+    let movies = store.state.users.user.movies
+    if (movies) {
+      movies = movies.filter(movie => {
+        return movie._id === state.movieID
+      })
+      return movies[0]
+    }
+  }
 }
 
 export const movies = {

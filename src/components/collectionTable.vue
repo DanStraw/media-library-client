@@ -11,7 +11,7 @@
         <tr>
           <td class="text-xs">
             <v-btn
-              :to="`/movies/${props.item._id}`"
+              :to="`/${mediaType.toLowerCase()}/${props.item._id}`"
               color="green"
               flat
               router

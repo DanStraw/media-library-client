@@ -1,9 +1,9 @@
 <template>
-  <div class="movie-page-main">
+  <div>
     <v-card
       class="pa-3"
       flat
-      v-if="movie"
+      v-if="book"
     >
       <v-layout
         row
@@ -14,44 +14,56 @@
           xs12
         >
           <div class="caption grey--text">Title</div>
-          <div>{{ movie.itemInfo.title }}</div>
+          <div>{{ book.itemInfo.title }}</div>
+        </v-flex>
+        <v-flex
+          md6
+          xs12
+        >
+          <div class="caption grey--text">Authors</div>
+          <div
+            :key="author"
+            v-for="author in book.itemInfo.authors"
+          >
+            <span>{{ author }}</span>
+          </div>
         </v-flex>
         <v-flex
           md6
           xs12
         >
           <div class="caption grey--text">Format</div>
-          <div>{{ movie.format }}</div>
+          <div>{{ book.format }}</div>
         </v-flex>
         <v-flex
           md6
           xs12
         >
-          <div class="caption grey--text">Last Watched</div>
-          <div>{{ movie.updated_at | formatTime(`MMM Do 'YY`)}}</div>
+          <div class="caption grey--text">Last Read</div>
+          <div>{{ book.updated_at | formatTime(`MMM Do 'YY`)}}</div>
         </v-flex>
         <v-flex
           md6
           xs12
         >
-          <div class="caption grey--text">Times Watched</div>
-          <div>{{ movie.viewCount }}</div>
+          <div class="caption grey--text">Times Read</div>
+          <div>{{ book.readCount }}</div>
         </v-flex>
         <v-flex
           md6
           xs12
         >
           <div class="caption grey--text">Summary</div>
-          <div>{{ movie.itemInfo.summary }}</div>
+          <div>{{ book.itemInfo.summary }}</div>
         </v-flex>
         <v-flex
           md8
           xs12
         >
-          <div class="caption grey--text">Poster</div>
+          <div class="caption grey--text">Cover</div>
           <div>
             <img
-              :src="`http://image.tmdb.org/t/p/w185${movie.itemInfo.image}`"
+              :src="`${book.itemInfo.image}`"
               alt
             />
           </div>
@@ -73,9 +85,9 @@
           <v-btn
             color="cyan darken-4"
             flat
-            to="/movies/"
+            to="/books/"
           >
-            <v-icon>arrow_back</v-icon>Return to Movies
+            <v-icon>arrow_back</v-icon>Return to Books
           </v-btn>
         </v-flex>
       </v-layout>
@@ -90,18 +102,15 @@ export default {
   beforeCreate() {},
   /* eslint-disable-next-line */
   mounted() {
-    this.$store.dispatch('getUser', 'movies')
-    this.$store.dispatch('setMovieID', this.$route.params.movieID)
+    this.$store.dispatch('getUser', 'books')
+    this.$store.dispatch('setBookID', this.$route.params.bookID)
   },
   methods: {},
   computed: {
     /* eslint-disable-next-line */
-    movie() {
-      return this.$store.getters.movie
+    book() {
+      return this.$store.getters.book
     }
   }
 }
 </script>
-
-<style>
-</style>
