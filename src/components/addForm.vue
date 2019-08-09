@@ -16,7 +16,7 @@
             color="teal lighten-2"
             flat
             v-on="on"
-          >Add a {{ formDetails.header }}</v-btn>
+          >Add {{ formDetails.header }}</v-btn>
         </template>
 
         <v-card>

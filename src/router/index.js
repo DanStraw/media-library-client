@@ -1,13 +1,15 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '@/pages/Home.vue'
-import MoviesPage from '@/pages/MoviesPage.vue'
-import BooksPage from '@/pages/BooksPage.vue'
-import MoviePage from '@/pages/MoviePage'
-import ErrorPage from '@/pages/Error.vue'
 import SignUpPage from '@/pages/SignUpPage'
 import LoginPage from '@/pages/LoginPage'
+import AlbumsPage from '@/pages/AlbumsPage'
+import AlbumPage from '@/pages/AlbumPage'
+import BooksPage from '@/pages/BooksPage.vue'
 import BookPage from '@/pages/BookPage'
+import MoviesPage from '@/pages/MoviesPage.vue'
+import MoviePage from '@/pages/MoviePage'
+import ErrorPage from '@/pages/Error.vue'
 
 Vue.use(Router)
 
@@ -65,6 +67,22 @@ let router = new Router({
       path: '/books',
       name: 'BooksPage',
       component: BooksPage,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/albums',
+      name: 'AlbumsPage',
+      component: AlbumsPage,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: 'album/:albumID',
+      name: 'AlbumPage',
+      component: AlbumPage,
       meta: {
         requiresAuth: true
       }

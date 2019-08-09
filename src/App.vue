@@ -81,7 +81,7 @@ export default {
         { text: 'Movies', route: '/movies', icon: 'movie' },
         { text: 'Books', route: '/books', icon: 'book' },
         { text: 'Games', route: '/error', icon: 'videogame_asset' },
-        { text: 'Music', route: '/error', icon: 'library_music' }
+        { text: 'Music', route: '/albums', icon: 'library_music' }
       ]
     }
   },

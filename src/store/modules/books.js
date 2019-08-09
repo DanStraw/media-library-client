@@ -1,4 +1,4 @@
-import booksService from '../../services/books.service'
+import bookService from '../../services/book.service'
 import userService from '../../services/user.service'
 import { store } from '../store'
 
@@ -17,7 +17,7 @@ const state = {
     { text: 'Format', value: 'format' },
     { text: 'Last Read', value: 'date_updated' },
     { text: 'Total Times Read', value: 'read' },
-    { text: 'Add REading', value: 'read' },
+    { text: 'Add Reading', value: 'read' },
     { text: 'Delete', value: 'delete' }
   ],
   bookDialog: false,
@@ -59,7 +59,7 @@ const mutations = {
         format: state.newBook.format,
         token: localStorage.getItem('mml_jwt')
       }
-      booksService.addBook(newBook).then(res => {
+      bookService.addBook(newBook).then(res => {
         state.newBook.title = ''
         state.newBook.format = ''
         state.dialog = false
@@ -148,9 +148,7 @@ const getters = {
   newBook: state => state.newBook,
   bookDialog: state => state.bookDialog,
   book: (state) => {
-    console.log(store.state.users.user)
     let books = store.state.users.user.books
-    console.log('books:', books)
     if (books) {
       books = books.filter(book => {
         return book._id === state.bookID
