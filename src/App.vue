@@ -80,7 +80,7 @@ export default {
         { text: 'Home', route: '/', icon: 'home' },
         { text: 'Movies', route: '/movies', icon: 'movie' },
         { text: 'Books', route: '/books', icon: 'book' },
-        { text: 'Games', route: '/error', icon: 'videogame_asset' },
+        { text: 'Games', route: '/games', icon: 'videogame_asset' },
         { text: 'Music', route: '/albums', icon: 'library_music' }
       ]
     }

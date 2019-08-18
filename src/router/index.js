@@ -7,6 +7,8 @@ import AlbumsPage from '@/pages/AlbumsPage'
 import AlbumPage from '@/pages/AlbumPage'
 import BooksPage from '@/pages/BooksPage.vue'
 import BookPage from '@/pages/BookPage'
+import GamesPage from '@/pages/GamesPage.vue'
+import GamePage from '@/pages/GamePage.vue'
 import MoviesPage from '@/pages/MoviesPage.vue'
 import MoviePage from '@/pages/MoviePage'
 import ErrorPage from '@/pages/Error.vue'
@@ -80,9 +82,25 @@ let router = new Router({
       }
     },
     {
-      path: 'album/:albumID',
+      path: '/album/:albumID',
       name: 'AlbumPage',
       component: AlbumPage,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/games',
+      name: 'GamesPage',
+      component: GamesPage,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/game/:gameID',
+      name: 'GamePage',
+      component: GamePage,
       meta: {
         requiresAuth: true
       }

@@ -74,7 +74,6 @@ const mutations = {
       return console.log('query too short')
     }
     albumService.generateDatalist(state.newAlbum.title).then(res => {
-      console.log('datalist:', res)
       let items = []
       res.forEach(resItem => {
         items.push({ title: resItem })

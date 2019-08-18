@@ -111,6 +111,7 @@ const getters = {
   userMovies: state => state.user.movies,
   userBooks: state => state.user.books,
   userAlbums: state => state.user.albums,
+  userGames: state => state.user.games,
   passwordFieldSettings: state => state.passwordField,
   recentMovie: state => {
     let time = 0
