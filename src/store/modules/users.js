@@ -35,12 +35,16 @@ const mutations = {
   /* eslint-disable-next-line */
   'GET_USER'(state, mediaType) {
     const user = JSON.parse(localStorage.getItem('mml_user'))
+    const token = localStorage.getItem('mml_jwt')
     if (!user) {
       return
     }
-    userService.getUser(user._id, mediaType).then(res => {
+    userService.getUser(user._id, token, mediaType).then(res => {
       state.user = res.data
       return state.user
+    }).catch(e => {
+      localStorage.clear()
+      router.push('/login')
     })
   },
   /* eslint-disable-next-line */
@@ -73,6 +77,9 @@ const mutations = {
         state.newUser[key] = ''
       }
     }).then(() => {
+      router.push('/login')
+    }).catch((e) => {
+      localStorage.clear()
       router.push('/login')
     })
   },
@@ -116,15 +123,58 @@ const getters = {
   recentMovie: state => {
     let time = 0
     let recentMovie = {}
-    if (state.user.movies) {
+    if (state.user.movies.length !== 0) {
       state.user.movies.forEach(movie => {
         if (movie.updated_at > time) {
           time = movie.updated_at
           recentMovie = movie
         }
       })
+      return recentMovie
     }
-    return recentMovie
+    return null
+  },
+  recentBook: state => {
+    let time = 0
+    let recentBook = {}
+    if (state.user.books.length !== 0) {
+      state.user.books.forEach(book => {
+        if (book.updated_at > time) {
+          time = book.updated_at
+          recentBook = book
+        }
+      })
+      return recentBook
+    }
+    return null
+  },
+  recentAlbum: state => {
+    let time = 0
+    let recentAlbum = {}
+    if (state.user.albums.length !== 0) {
+      state.user.albums.forEach(album => {
+        if (album.updated_at > time) {
+          time = album.updated_at
+          recentAlbum = album
+        }
+      })
+      return recentAlbum
+    }
+    return null
+  },
+  recentGame: state => {
+    let time = 0
+    let recentGame = {}
+    if (state.user.games.length !== 0) {
+      state.user.games.forEach(game => {
+        if (game.updated_at > time) {
+          time = game.updated_at
+          recentGame = game
+        }
+      })
+      return recentGame
+    }
+    return null
   }
 }
 export const users = {

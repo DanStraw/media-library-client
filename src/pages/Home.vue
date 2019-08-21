@@ -8,7 +8,7 @@
       >
         <v-flex md7>
           <v-card>
-            <v-card-title class="display-1">{{ user.username }}&#39;s Media Summary</v-card-title>
+            <v-card-title class="display-1 justify-center">{{ user.username }}&#39;s Media Summary</v-card-title>
           </v-card>
         </v-flex>
       </v-layout>
@@ -21,13 +21,22 @@
           xs12
         >
           <v-card>
-            <v-card-title primary-title>Most Recently Viewed Movie</v-card-title>
+            <v-card-title
+              class="justify-center title"
+              primary-title
+            >
+              <span class="card-title">Most Recently Viewed Movie</span>
+            </v-card-title>
             <v-spacer></v-spacer>
             <v-card-text>
-              <ul>
-                <li>{{recentMovie.itemInfo.title}}</li>
-                <li>Viewed: {{recentMovie.updated_at | formatTime(`Do MMM 'YY h:m a`) }}</li>
-              </ul>
+              <div v-if="recentMovie">
+                <p>{{recentMovie.itemInfo.title}}</p>
+                <p>Viewed: {{recentMovie.updated_at | formatTime(`Do MMM 'YY h:mm a`) }}</p>
+              </div>
+              <div v-else>
+                No Movies Yet. Add Some
+                <router-link to="/movies">Here</router-link>
+              </div>
             </v-card-text>
           </v-card>
         </v-flex>
@@ -37,13 +46,77 @@
           xs12
         >
           <v-card>
-            <v-card-title primary-title>Most Recently Read Book</v-card-title>
+            <v-card-title
+              class="justify-center title"
+              primary-title
+            >
+              <span class="card-title">Most Recently Read Book</span>
+            </v-card-title>
+            <v-spacer></v-spacer>
+            <v-card-text class="text-center">
+              <div v-if="recentBook">
+                <p>{{ recentBook.itemInfo.title }}</p>
+                <p>Read: {{recentBook.updated_at | formatTime(`Do MMM 'YY h:mm a`) }}</p>
+              </div>
+              <div v-else>
+                No Books Yet. Add Some
+                <router-link to="/books">Here</router-link>
+              </div>
+            </v-card-text>
+          </v-card>
+        </v-flex>
+      </v-layout>
+      <v-layout
+        justify-space-around
+        pt-5
+        row
+      >
+        <v-flex
+          md3
+          xs12
+        >
+          <v-card class="text-center">
+            <v-card-title
+              class="justify-center title"
+              primary-title
+            >
+              <span class="card-title">Most Recent Album Listened To</span>
+            </v-card-title>
             <v-spacer></v-spacer>
             <v-card-text>
-              <ul>
-                <li>Book Title</li>
-                <li>Book Finished: Date and time</li>
-              </ul>
+              <div v-if="recentAlbum">
+                <p>{{ recentAlbum.itemInfo.title }}</p>
+                <p>Listened: {{recentAlbum.updated_at | formatTime(`Do MMM 'YY h:mm a`) }}</p>
+              </div>
+              <div v-else>
+                No Albums Yet. Add Some
+                <router-link to="/albums">Here</router-link>
+              </div>
+            </v-card-text>
+          </v-card>
+        </v-flex>
+
+        <v-flex
+          md3
+          xs12
+        >
+          <v-card>
+            <v-card-title
+              class="justify-center title"
+              primary-title
+            >
+              <span class="card-title">Most Recently Played Game</span>
+            </v-card-title>
+            <v-spacer></v-spacer>
+            <v-card-text>
+              <div v-if="recentGame">
+                <p>{{ recentGame.itemInfo.title }}</p>
+                <p>Played: {{recentGame.updated_at | formatTime(`Do MMM 'YY h:mm a`) }}</p>
+              </div>
+              <div v-else>
+                No Games Yet. Add Some
+                <router-link to="/games">Here</router-link>
+              </div>
             </v-card-text>
           </v-card>
         </v-flex>
@@ -70,6 +143,18 @@ export default {
     /* eslint-disable-next-line */
     recentMovie() {
       return this.$store.getters.recentMovie
+    },
+    /* eslint-disable-next-line */
+    recentBook() {
+      return this.$store.getters.recentBook
+    },
+    /* eslint-disable-next-line */
+    recentAlbum() {
+      return this.$store.getters.recentAlbum
+    },
+    /* eslint-disable-next-line */
+    recentGame() {
+      return this.$store.getters.recentGame
     }
   },
   /* eslint-disable-next-line */
@@ -85,5 +170,11 @@ ul {
 }
 .home {
   padding-top: 50px;
+}
+.card-title {
+  border-bottom: 1px black solid;
+  padding-bottom: 10px;
+  width: 100%;
+  text-align: center;
 }
 </style>

@@ -19,12 +19,14 @@
         <v-card-text>
           <v-form v-on:submit.prevent="handleUserLogin">
             <v-text-field
+              autocomplete="on"
               label="Email"
               required
               v-model="returningUser.email"
             ></v-text-field>
             <v-text-field
               :type="passwordVisibility.type"
+              autocomplete="on"
               label="Password"
               required
               v-model="returningUser.password"

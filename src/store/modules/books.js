@@ -2,10 +2,10 @@ import bookService from '../../services/book.service'
 import userService from '../../services/user.service'
 import { store } from '../store'
 
-const booksdb = require('google-books-search')
-var options = {
-  key: process.env.GOOGLE_BOOKS_API_KEY
-}
+// const booksdb = require('google-books-search')
+// var options = {
+//   key: process.env.GOOGLE_BOOKS_API_KEY
+// }
 
 const state = {
   newBook: {
@@ -47,27 +47,20 @@ const state = {
 const mutations = {
   /* eslint-disable-next-line */
   'ADD_TO_BOOK_LIBRARY'(state) {
-    booksdb.search(state.newBook.title, options, (err, res) => {
-      if (err) {
-        return console.log(err)
-      }
-      if (!res) {
-        return alert('Book not Found')
-      }
-      const newBook = {
-        book: res[0],
-        format: state.newBook.format,
-        token: localStorage.getItem('mml_jwt')
-      }
-      bookService.addBook(newBook).then(res => {
-        state.newBook.title = ''
-        state.newBook.format = ''
-        state.dialog = false
-      })
-        .then(res => {
-          this.dispatch('getUser', 'books')
-        })
+    const newBook = {
+      book: state.newBook.title,
+      format: state.newBook.format,
+      token: localStorage.getItem('mml_jwt')
+    }
+    bookService.addBook(newBook).then(res => {
+      state.newBook.title = ''
+      state.newBook.format = ''
+      state.dialog = false
     })
+      .then(res => {
+        console.log('addBook res:', res)
+        this.dispatch('getUser', 'books')
+      })
   },
   /* eslint-disable-next-line */
   'INCREMENT_READ_COUNT'(state, bookId) {
@@ -80,33 +73,19 @@ const mutations = {
   },
   /* eslint-disable-next-line */
   'BOOK_DATALIST'(state) {
-    state.bookFormDetails.datalistItems = []
     if (state.newBook.title.length < 3) {
       return console.log('query too short')
     }
     /* eslint-disable-next-line */
-    booksdb.search(state.newBook.title, options, (err, res) => {
-      if (err) {
-        return console.log(err)
-      }
-      if (res.length < 5) {
-        for (let i = 0; i < res.length; i++) {
-          state.bookFormDetails.datalistItems.push(res[i])
-        }
-      } else {
-        for (let i = 0; i < 5; i++) {
-          state.bookFormDetails.datalistItems.push(res[i])
-        }
-      }
-      state.bookFormDetails.showDatalist = true
-      state.bookFormDetails.datalistItems.filter((book, i) => {
-        return i <= 4
+    bookService.generateDatalist(state.newBook.title).then(res => {
+      state.bookFormDetails.datalistItems = []
+      let items = []
+      res.forEach(resItem => {
+        items.push({ title: resItem })
       })
+      state.bookFormDetails.showDatalist = true
+      state.bookFormDetails.datalistItems = items
     })
-  },
-  /* eslint-disable-next-line */
-  'HIDE_BOOK_DATALIST'(state) {
-    state.bookFormDetails.showDatalist = false
   },
   /* eslint-disable-next-line */
   'DELETE_BOOK'(state, bookId) {
@@ -131,9 +110,6 @@ const actions = {
   },
   incrementReadCount: ({ commit }, bookId) => {
     commit('INCREMENT_READ_COUNT', bookId)
-  },
-  hideBookDatalist: ({ commit }) => {
-    commit('HIDE_BOOK_DATALIST')
   },
   deleteBook: ({ commit }, bookId) => {
     commit('DELETE_BOOK', bookId)

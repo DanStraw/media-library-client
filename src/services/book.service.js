@@ -8,6 +8,10 @@ export default {
     })
   },
   /* eslint-disable-next-line */
+  generateDatalist(title) {
+    return axios.post('/api/books/datalist', { title }).then(res => res.data)
+  },
+  /* eslint-disable-next-line */
   getAll() {
     return axios.get('/api/books').then(res => res.data)
   },

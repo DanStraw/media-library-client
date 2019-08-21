@@ -14,8 +14,8 @@ export default {
     return axios.post('/api/user/logout', user)
   },
   /* eslint-disable-next-line */
-  getUser(id, mediaType) {
-    return axios.get(`/api/user/${id}/${mediaType}`)
+  getUser(id, token, mediaType) {
+    return axios.get(`/api/user/${id}/${mediaType}/${token}`)
   },
   /* eslint-disable-next-line */
   updateCount(user, _item_id, media_type, media_action) {

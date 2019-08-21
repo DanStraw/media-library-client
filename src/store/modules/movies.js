@@ -2,7 +2,7 @@ import movieService from '../../services/movie.service'
 import userService from '../../services/user.service'
 import { store } from '../store'
 
-const MovieDB = require('moviedb')(process.env.MOVIEDB_API_KEY)
+// const MovieDB = require('moviedb')(process.env.MOVIEDB_API_KEY)
 
 const state = {
   newMovie: {
@@ -44,54 +44,35 @@ const state = {
 const mutations = {
   /* eslint-disable-next-line */
   'ADD_TO_MOVIE_LIBRARY'(state) {
-    MovieDB.searchMovie({ query: state.newMovie.title }, (err, res) => {
-      if (err) {
-        return console.log(err)
-      }
-      if (!res.results) {
-        return alert('Movie not Found')
-      }
-      const newMovie = {
-        movie: res.results[0],
-        format: state.newMovie.format,
-        token: localStorage.getItem('mml_jwt')
-      }
-      movieService.addMovie(newMovie).then(res => {
-        state.newMovie.title = ''
-        state.newMovie.format = ''
-      }).then(res => {
-        state.dialog = false
-      }).then(res => {
-        this.dispatch('getUser', 'movies')
-      })
+    const newMovie = {
+      title: state.newMovie.title,
+      format: state.newMovie.format,
+      token: localStorage.getItem('mml_jwt')
+    }
+    movieService.addMovie(newMovie).then(res => {
+      state.newMovie.title = ''
+      state.newMovie.format = ''
+    }).then(res => {
+      this.dispatch('getUser', 'movies')
     })
   },
   /* eslint-disable-next-line */
   'MOVIE_DATALIST'(state) {
-    state.movieFormDetails.datalistItems = []
     if (state.newMovie.title.length < 3) {
       return console.log('query too short')
     }
     /* eslint-disable-next-line */
-    MovieDB.searchMovie({ query: state.newMovie.title }, (err, res) => {
-      if (err) {
-        return console.log(err)
-      }
-      if (res.results.length < 5) {
-        for (let i = 0; i < res.results.length; i++) {
-          state.movieFormDetails.datalistItems.push(res.results[i])
-        }
-      } else {
-        for (let i = 0; i < 5; i++) {
-          state.movieFormDetails.datalistItems.push(res.results[i])
-        }
-      }
+    console.log('datalist:', state.newMovie.title)
+    movieService.generateDatalist(state.newMovie.title).then(res => {
+      state.movieFormDetails.datalistItems = []
+      let items = []
+      console.log('dRes:', res)
+      res.forEach(resItem => {
+        items.push({ title: resItem.title })
+      })
       state.movieFormDetails.showDatalist = true
+      state.movieFormDetails.datalistItems = items
     })
-  },
-  /* eslint-disable-next-line */
-  'HIDE_MOVIE_DATALIST'(state) {
-    state.movieFormDetails.showDatalist = false
   },
   /* eslint-disable-next-line */
   'INCREMENT_VIEW_COUNT'(state, movieId) {
@@ -122,9 +103,6 @@ const actions = {
   },
   handleMovieDatalist: ({ commit }) => {
     commit('MOVIE_DATALIST')
-  },
-  hideMovieDatalist: ({ commit }) => {
-    commit('HIDE_MOVIE_DATALIST')
   },
   incrementViewCount: ({ commit }, movieId) => {
     commit('INCREMENT_VIEW_COUNT', movieId)

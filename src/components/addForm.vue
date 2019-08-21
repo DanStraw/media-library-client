@@ -46,7 +46,6 @@
                     v-if="formDetails.showDatalist"
                   >
                     <option
-                      @click="hideDatalist"
                       v-bind:key="suggestion.id"
                       v-for="suggestion in formDetails.datalistItems"
                     >{{ suggestion.title }}</option>
@@ -105,10 +104,6 @@ export default {
     /* eslint-disable-next-line */
     handleDatalist(datalistAction) {
       this.$store.dispatch(datalistAction)
-    },
-    /* eslint-disable-next-line */
-    hideDatalist() {
-      this.$store.dispatch(`hide${this.mediaType}Datalist`)
     },
     /* eslint-disable-next-line */
     toggleForm() {
