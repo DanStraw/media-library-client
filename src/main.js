@@ -10,7 +10,7 @@ import { store } from './store/store'
 import moment from 'moment'
 
 Vue.config.productionTip = false
-axios.defaults.baseURL = 'http://localhost:3000'
+axios.defaults.baseURL = process.env.SERVER_URL
 
 Vue.use(Vuetify)
 

@@ -67,6 +67,10 @@
                   >{{ passwordVisibility.icon }}</v-icon>
                 </template>
               </v-text-field>
+              <p
+                class="red--text"
+                v-if="signupErrorMessage"
+              >{{signupErrorMessage}}</p>
               <v-layout
                 justify-space-between
                 row
@@ -135,6 +139,10 @@ export default {
     /* eslint-disable-next-line */
     passwordVisibility() {
       return this.$store.getters.passwordFieldSettings
+    },
+    /* eslint-disable-next-line */
+    signupErrorMessage() {
+      return this.$store.getters.signupErrorMessage
     }
   }
 }

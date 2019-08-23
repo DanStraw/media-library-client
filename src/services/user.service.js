@@ -4,10 +4,21 @@ export default {
   /* eslint-disable-next-line */
   addUser(user) {
     return axios.post('/api/users', user)
+      .then(function (response) {
+        return response
+      }).catch(function (error) {
+        return error
+      })
   },
   /* eslint-disable-next-line */
   loginUser(returningUser) {
     return axios.post('/api/user/login', returningUser)
+      .then(function (response) {
+        return response
+      })
+      .catch(function (error) {
+        return error
+      })
   },
   /* eslint-disable-next-line */
   logoutUser(user) {

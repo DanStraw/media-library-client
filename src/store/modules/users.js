@@ -14,12 +14,19 @@ const state = {
   passwordField: {
     icon: 'visibility',
     type: 'password'
-  }
+  },
+  loginError: null,
+  signupError: null
 }
 
 const mutations = {
   /* eslint-disable-next-line */
   'CREATE_USER'(state) {
+    state.signupError = null
+    if (state.newUser.password !== state.newUser.passwordConfirm) {
+      state.signupError = 'Confirm Password Must Match Password'
+      return false
+    }
     userService.addUser(state.newUser).then(res => {
       localStorage.setItem('mml_jwt', res.data.token)
       localStorage.setItem('mml_user', JSON.stringify(res.data.user))
@@ -30,6 +37,8 @@ const mutations = {
       return res.data
     }).then(res => {
       router.push('/')
+    }).catch(e => {
+      state.signupError = 'Account Already Exists for this Email'
     })
   },
   /* eslint-disable-next-line */
@@ -49,6 +58,7 @@ const mutations = {
   },
   /* eslint-disable-next-line */
   'LOGIN_USER'(state) {
+    state.loginError = null
     const returningUser = {
       email: state.newUser.email,
       password: state.newUser.password
@@ -63,6 +73,8 @@ const mutations = {
       return res.data
     }).then(res => {
       router.push('/')
+    }).catch(e => {
+      state.loginError = 'Username or Password Incorrect'
     })
   },
   /* eslint-disable-next-line */
@@ -115,6 +127,8 @@ const actions = {
 const getters = {
   newUser: state => state.newUser,
   user: state => state.user,
+  signupErrorMessage: state => state.signupError,
+  loginErrorMessage: state => state.loginError,
   userMovies: state => state.user.movies,
   userBooks: state => state.user.books,
   userAlbums: state => state.user.albums,

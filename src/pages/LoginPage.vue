@@ -39,6 +39,21 @@
               </template>
             </v-text-field>
             <v-layout
+              justify-center
+              row
+              v-if="errorMessage"
+            >
+              <v-flex
+                justify-center
+                xs12
+              >
+                <p
+                  class="red--text"
+                  text-center
+                >{{ errorMessage }}</p>
+              </v-flex>
+            </v-layout>
+            <v-layout
               justify-space-between
               row
             >
@@ -95,6 +110,10 @@ export default {
     /* eslint-disable-next-line */
     passwordVisibility() {
       return this.$store.getters.passwordFieldSettings
+    },
+    /* eslint-disable-next-line */
+    errorMessage() {
+      return this.$store.getters.loginErrorMessage
     }
   }
 }
