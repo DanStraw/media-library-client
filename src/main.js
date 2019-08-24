@@ -10,6 +10,7 @@ import { store } from './store/store'
 import moment from 'moment'
 
 Vue.config.productionTip = false
+console.log('server_url:', process.env.SERVER_URL)
 axios.defaults.baseURL = process.env.SERVER_URL
 
 Vue.use(Vuetify)
