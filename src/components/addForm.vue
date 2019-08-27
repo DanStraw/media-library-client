@@ -60,7 +60,10 @@
                 ></v-select>
               </div>
 
-              <v-btn type="submit">Submit</v-btn>
+              <v-btn
+                :loading="handleLoading"
+                type="submit"
+              >Submit</v-btn>
             </v-form>
           </v-card-text>
 
@@ -97,20 +100,23 @@ export default {
   methods: {
     /* eslint-disable-next-line */
     handleSubmit(submitAction) {
-      this.$store.dispatch(submitAction).then(res => {
-        this.dialog = false
-      })
+      console.log('submit action:', submitAction)
+      this.$store.dispatch(submitAction)
+      // .then(res => {
+      //   this.dialog = false
+      // })
     },
     /* eslint-disable-next-line */
     handleDatalist(datalistAction) {
       this.$store.dispatch(datalistAction)
-    },
-    /* eslint-disable-next-line */
-    toggleForm() {
-      return (this.toggle = !this.toggle)
     }
   },
-  computed: {},
+  computed: {
+    /* eslint-disable-next-line */
+    handleLoading() {
+      return this.$store.getters[`handle${this.mediaType}Loading`]
+    }
+  },
   /* eslint-disable-next-line */
   created() {}
 }

@@ -2,8 +2,6 @@ import movieService from '../../services/movie.service'
 import userService from '../../services/user.service'
 import { store } from '../store'
 
-// const MovieDB = require('moviedb')(process.env.MOVIEDB_API_KEY)
-
 const state = {
   newMovie: {
     title: '',
@@ -38,23 +36,37 @@ const state = {
     datalistItems: [],
     showDatalist: false,
     movieID: null
-  }
+  },
+  snackbar: {
+    show: false,
+    itemTitle: null,
+    timeout: 2000
+  },
+  formLoading: false
 }
 
 const mutations = {
   /* eslint-disable-next-line */
   'ADD_TO_MOVIE_LIBRARY'(state) {
     const newMovie = {
-      title: state.newMovie.title,
+      movie: state.newMovie.title,
       format: state.newMovie.format,
       token: localStorage.getItem('mml_jwt')
     }
+    state.formLoading = true
     movieService.addMovie(newMovie).then(res => {
+      state.snackbar.itemTitle = res
       state.newMovie.title = ''
       state.newMovie.format = ''
-    }).then(res => {
-      this.dispatch('getUser', 'movies')
+      state.dialog = false
+      state.snackbar.show = true
+      state.formLoading = false
     })
+      .then(res => {
+        this.dispatch('getUser', 'movies')
+      }).catch(err => {
+        console.log('added to movie err:', err)
+      })
   },
   /* eslint-disable-next-line */
   'MOVIE_DATALIST'(state) {
@@ -62,11 +74,9 @@ const mutations = {
       return console.log('query too short')
     }
     /* eslint-disable-next-line */
-    console.log('datalist:', state.newMovie.title)
     movieService.generateDatalist(state.newMovie.title).then(res => {
       state.movieFormDetails.datalistItems = []
       let items = []
-      console.log('dRes:', res)
       res.forEach(resItem => {
         items.push({ title: resItem.title })
       })
@@ -127,7 +137,9 @@ const getters = {
       })
       return movies[0]
     }
-  }
+  },
+  movieSnackbar: state => state.snackbar,
+  handleMovieLoading: state => state.formLoading
 }
 
 export const movies = {

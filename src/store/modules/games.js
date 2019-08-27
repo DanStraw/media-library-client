@@ -36,22 +36,31 @@ const state = {
     datalistItems: [],
     showDatalist: false,
     gameID: null
-  }
+  },
+  snackbar: {
+    show: false,
+    itemTitle: null,
+    timeout: 2000
+  },
+  formLoading: false
 }
 
 const mutations = {
   /* eslint-disable-next-line */
   'ADD_TO_GAME_LIBRARY'(state) {
     const newGame = {
-      title: state.newGame.title,
+      game: state.newGame.title,
       format: state.newGame.format,
       token: localStorage.getItem('mml_jwt')
     }
+    state.formLoading = true
     gameService.addGame(newGame).then(res => {
+      state.snackbar.itemTitle = res
       state.newGame.title = ''
       state.newGame.format = ''
       state.dialog = false
-      state.gameFormDetails.datalistItems = []
+      state.snackbar.show = true
+      state.formLoading = false
     })
       .then(res => {
         this.dispatch('getUser', 'games')
@@ -68,12 +77,12 @@ const mutations = {
   },
   /* eslint-disable-next-line */
   'GAME_DATALIST'(state) {
-    state.gameFormDetails.showDatalist = false
-    state.gameFormDetails.datalistItems = []
     if (state.newGame.title.length < 3) {
       return console.log('query too short')
     }
     gameService.generateDatalist(state.newGame.title).then(res => {
+      state.gameFormDetails.showDatalist = false
+      state.gameFormDetails.datalistItems = []
       let items = []
       res.forEach(resItem => {
         items.push({ title: resItem })
@@ -126,7 +135,9 @@ const getters = {
       })
       return games[0]
     }
-  }
+  },
+  gameSnackbar: state => state.snackbar,
+  handleGameLoading: state => state.formLoading
 }
 
 export const games = {

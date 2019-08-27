@@ -2,11 +2,6 @@ import bookService from '../../services/book.service'
 import userService from '../../services/user.service'
 import { store } from '../store'
 
-// const booksdb = require('google-books-search')
-// var options = {
-//   key: process.env.GOOGLE_BOOKS_API_KEY
-// }
-
 const state = {
   newBook: {
     title: '',
@@ -41,7 +36,13 @@ const state = {
     datalistItems: [],
     showDatalist: false,
     bookID: null
-  }
+  },
+  snackbar: {
+    show: false,
+    addedBook: null,
+    timeout: 2000
+  },
+  formLoading: false
 }
 
 const mutations = {
@@ -52,13 +53,16 @@ const mutations = {
       format: state.newBook.format,
       token: localStorage.getItem('mml_jwt')
     }
+    state.formLoading = true
     bookService.addBook(newBook).then(res => {
+      state.snackbar.itemTitle = res
       state.newBook.title = ''
       state.newBook.format = ''
       state.dialog = false
+      state.snackbar.show = true
+      state.formLoading = false
     })
       .then(res => {
-        console.log('addBook res:', res)
         this.dispatch('getUser', 'books')
       })
   },
@@ -131,7 +135,9 @@ const getters = {
       })
       return books[0]
     }
-  }
+  },
+  bookSnackbar: state => state.snackbar,
+  handleBookLoading: state => state.formLoading
 }
 
 export const books = {

@@ -1,5 +1,16 @@
 <template>
   <div>
+    <v-snackbar
+      :timeout="snackbar.timeout"
+      color="success"
+      top
+      v-model="snackbar.show"
+    >
+      <div>
+        <span class="font-italic">{{ snackbar.itemTitle }}</span>
+        &nbsp;added to Library
+      </div>
+    </v-snackbar>
     <AddForm
       :formDetails="getFormDetails"
       :newMedia="getNewBook"
@@ -54,6 +65,14 @@ export default {
     /* eslint-disable-next-line */
     userBooks() {
       return this.$store.getters.userBooks
+    },
+    /* eslint-disable-next-line */
+    snackbar() {
+      return this.$store.getters.bookSnackbar
+    },
+    /* eslint-disable-next-line */
+    loading() {
+      return this.$store.getters.handleBookLoading
     }
   },
   /* eslint-disable-next-line */

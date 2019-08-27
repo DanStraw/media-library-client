@@ -1,5 +1,16 @@
 <template>
   <div>
+    <v-snackbar
+      :timeout="snackbar.timeout"
+      color="success"
+      top
+      v-model="snackbar.show"
+    >
+      <div>
+        <span class="font-italic">{{ snackbar.itemTitle }}</span>
+        &nbsp;added to Library
+      </div>
+    </v-snackbar>
     <AddForm
       :formDetails="getFormDetails"
       :newMedia="getNewAlbum"
@@ -54,6 +65,9 @@ export default {
     /* eslint-disable-next-line */
     userAlbums() {
       return this.$store.getters.userAlbums
+    } /* eslint-disable-next-line */,
+    snackbar() {
+      return this.$store.getters.albumSnackbar
     }
   },
   /* eslint-disable-next-line */

@@ -36,22 +36,31 @@ const state = {
     datalistItems: [],
     showDatalist: false,
     albumID: null
-  }
+  },
+  snackbar: {
+    show: false,
+    itemTitle: null,
+    timeout: 2000
+  },
+  formLoading: false
 }
 
 const mutations = {
   /* eslint-disable-next-line */
   'ADD_TO_ALBUM_LIBRARY'(state) {
     const newAlbum = {
-      title: state.newAlbum.title,
+      album: state.newAlbum.title,
       format: state.newAlbum.format,
       token: localStorage.getItem('mml_jwt')
     }
+    state.formLoading = true
     albumService.addAlbum(newAlbum).then(res => {
+      state.snackbar.itemTitle = res
       state.newAlbum.title = ''
       state.newAlbum.format = ''
       state.dialog = false
-      state.albumFormDetails.datalistItems = []
+      state.snackbar.show = true
+      state.formLoading = false
     })
       .then(res => {
         this.dispatch('getUser', 'albums')
@@ -68,12 +77,12 @@ const mutations = {
   },
   /* eslint-disable-next-line */
   'ALBUM_DATALIST'(state) {
-    state.albumFormDetails.showDatalist = false
-    state.albumFormDetails.datalistItems = []
     if (state.newAlbum.title.length < 3) {
       return console.log('query too short')
     }
     albumService.generateDatalist(state.newAlbum.title).then(res => {
+      state.albumFormDetails.showDatalist = false
+      state.albumFormDetails.datalistItems = []
       let items = []
       res.forEach(resItem => {
         items.push({ title: resItem })
@@ -126,7 +135,9 @@ const getters = {
       })
       return albums[0]
     }
-  }
+  },
+  albumSnackbar: state => state.snackbar,
+  handleAlbumLoading: state => state.formLoading
 }
 
 export const albums = {
