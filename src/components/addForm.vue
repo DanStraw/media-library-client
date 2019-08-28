@@ -100,11 +100,7 @@ export default {
   methods: {
     /* eslint-disable-next-line */
     handleSubmit(submitAction) {
-      console.log('submit action:', submitAction)
       this.$store.dispatch(submitAction)
-      // .then(res => {
-      //   this.dialog = false
-      // })
     },
     /* eslint-disable-next-line */
     handleDatalist(datalistAction) {

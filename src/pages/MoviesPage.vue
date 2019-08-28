@@ -7,7 +7,7 @@
       v-model="snackbar.show"
     >
       <div>
-        <span class="font-italic">{{ snackbar.addedGame }}</span>
+        <span class="font-italic">{{ snackbar.itemTitle }}</span>
         &nbsp;added to Library
       </div>
     </v-snackbar>
@@ -68,6 +68,7 @@ export default {
     },
     /* eslint-disable-next-line */
     snackbar() {
+      console.log('snackbar:', this.$store.getters.movieSnackbar)
       return this.$store.getters.movieSnackbar
     },
     /* eslint-disable-next-line */
