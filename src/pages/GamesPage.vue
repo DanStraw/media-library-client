@@ -6,10 +6,9 @@
       top
       v-model="snackbar.show"
     >
-      <div>
-        <span class="font-italic">{{ snackbar.itemTitle }}</span>
-        &nbsp;added to Library
-      </div>
+      <span>
+        <span class="font-italic">{{ snackbar.itemTitle }}</span>&nbsp;added to Library
+      </span>
     </v-snackbar>
     <AddForm
       :formDetails="getFormDetails"
@@ -81,5 +80,10 @@ export default {
 <style scoped>
 .v-datatable__actions {
   justify-content: center !important;
+}
+.v-snack__content {
+  justify-content: center !important;
+  align-content: center !important;
+  font-size: 3rem;
 }
 </style>

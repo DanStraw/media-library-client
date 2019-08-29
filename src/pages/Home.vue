@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <v-container>
+    <v-container class="hidden-sm-and-down">
       <v-layout
         justify-center
         pb-5
@@ -84,7 +84,7 @@
             </v-card-title>
             <v-spacer></v-spacer>
             <v-card-text>
-              <div v-if="recentAlbum">
+              <div v-if="recentAlbum !== null">
                 <p>{{ recentAlbum.itemInfo.title }}</p>
                 <p>Listened: {{recentAlbum.updated_at | formatTime(`Do MMM 'YY h:mm a`) }}</p>
               </div>
@@ -122,6 +122,39 @@
         </v-flex>
       </v-layout>
     </v-container>
+    <v-container class="hidden-md-and-up">
+      <v-carousel>
+        <v-carousel-item
+          :key="item.countText"
+          v-for="item in recentItems"
+        >
+          <v-sheet
+            color="primary"
+            height="100%"
+            tile
+          >
+            <v-card
+              class="justify-center"
+              color="secondary"
+              height="100%"
+            >
+              <v-card-title class="justify-center display-1">{{ item.header }}</v-card-title>
+              <v-spacer></v-spacer>
+              <v-card-text class="justify-center headline">
+                <div v-if="item.info">
+                  <p>{{ item.info.itemInfo.title }}</p>
+                  <p>{{ item.countText }}: {{ item.updated_at | formatTime(`Do MM 'YY hh:mm a`) }}</p>
+                </div>
+                <div v-else>
+                  No {{ item.nullText }} Yes. Add Some
+                  <router-link :to="item.link">Here</router-link>
+                </div>
+              </v-card-text>
+            </v-card>
+          </v-sheet>
+        </v-carousel-item>
+      </v-carousel>
+    </v-container>
   </div>
 </template>
 
@@ -155,6 +188,39 @@ export default {
     /* eslint-disable-next-line */
     recentGame() {
       return this.$store.getters.recentGame
+    },
+    /* eslint-disable-next-line */
+    recentItems() {
+      return [
+        {
+          info: this.$store.getters.recentMovie,
+          header: 'Most Recently Viewed Movie',
+          countText: 'Viewed',
+          nullText: 'Movies Viewed',
+          link: '/movies'
+        },
+        {
+          info: this.$store.getters.recentBook,
+          header: 'Most Recently Read Book',
+          countText: 'Read',
+          nullText: 'Books Read',
+          link: '/books'
+        },
+        {
+          info: this.$store.getters.recentAlbum,
+          header: 'Most Recently Listened Album',
+          countText: 'Listened',
+          nullText: 'Albums Listed To',
+          link: '/albums'
+        },
+        {
+          info: this.$store.getters.recentGame,
+          header: 'Most Recently Played Game',
+          countText: 'Played',
+          nullText: 'Games Played',
+          link: '/games'
+        }
+      ]
     }
   },
   /* eslint-disable-next-line */

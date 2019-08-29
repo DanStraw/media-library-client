@@ -139,7 +139,7 @@ const getters = {
     let recentMovie = {}
     if (state.user.movies.length !== 0) {
       state.user.movies.forEach(movie => {
-        if (movie.updated_at > time) {
+        if (movie.updated_at > time && movie.viewCount > 0) {
           time = movie.updated_at
           recentMovie = movie
         }
@@ -153,7 +153,7 @@ const getters = {
     let recentBook = {}
     if (state.user.books.length !== 0) {
       state.user.books.forEach(book => {
-        if (book.updated_at > time) {
+        if (book.updated_at > time && book.readCount > 0) {
           time = book.updated_at
           recentBook = book
         }
@@ -167,21 +167,23 @@ const getters = {
     let recentAlbum = {}
     if (state.user.albums.length !== 0) {
       state.user.albums.forEach(album => {
-        if (album.updated_at > time) {
+        if (album.updated_at > time && album.listenCount > 0) {
           time = album.updated_at
           recentAlbum = album
         }
       })
-      return recentAlbum
+      if (recentAlbum.itemInfo) {
+        return recentAlbum
+      }
+      return null
     }
-    return null
   },
   recentGame: state => {
     let time = 0
     let recentGame = {}
     if (state.user.games.length !== 0) {
       state.user.games.forEach(game => {
-        if (game.updated_at > time) {
+        if (game.updated_at > time && game.playCount > 0) {
           time = game.updated_at
           recentGame = game
         }
