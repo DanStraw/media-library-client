@@ -137,43 +137,53 @@ const getters = {
   recentMovie: state => {
     let time = 0
     let recentMovie = {}
-    if (state.user.movies.length !== 0) {
-      state.user.movies.forEach(movie => {
-        if (movie.updated_at > time && movie.viewCount > 0) {
-          time = movie.updated_at
-          recentMovie = movie
+    if (state.user.movies) {
+      if (state.user.movies.length !== 0) {
+        state.user.movies.forEach(movie => {
+          if (movie.updated_at > time && movie.viewCount > 0) {
+            time = movie.updated_at
+            recentMovie = movie
+          }
+        })
+        if (recentMovie.itemInfo) {
+          return recentMovie
         }
-      })
-      return recentMovie
+      }
     }
     return null
   },
   recentBook: state => {
     let time = 0
     let recentBook = {}
-    if (state.user.books.length !== 0) {
-      state.user.books.forEach(book => {
-        if (book.updated_at > time && book.readCount > 0) {
-          time = book.updated_at
-          recentBook = book
+    if (state.user.books) {
+      if (state.user.books.length !== 0) {
+        state.user.books.forEach(book => {
+          if (book.updated_at > time && book.readCount > 0) {
+            time = book.updated_at
+            recentBook = book
+          }
+        })
+        if (recentBook.itemInfo) {
+          return recentBook
         }
-      })
-      return recentBook
+      }
     }
     return null
   },
   recentAlbum: state => {
     let time = 0
     let recentAlbum = {}
-    if (state.user.albums.length !== 0) {
-      state.user.albums.forEach(album => {
-        if (album.updated_at > time && album.listenCount > 0) {
-          time = album.updated_at
-          recentAlbum = album
+    if (state.user.albums) {
+      if (state.user.albums.length !== 0) {
+        state.user.albums.forEach(album => {
+          if (album.updated_at > time && album.listenCount > 0) {
+            time = album.updated_at
+            recentAlbum = album
+          }
+        })
+        if (recentAlbum.itemInfo) {
+          return recentAlbum
         }
-      })
-      if (recentAlbum.itemInfo) {
-        return recentAlbum
       }
       return null
     }
@@ -181,16 +191,20 @@ const getters = {
   recentGame: state => {
     let time = 0
     let recentGame = {}
-    if (state.user.games.length !== 0) {
-      state.user.games.forEach(game => {
-        if (game.updated_at > time && game.playCount > 0) {
-          time = game.updated_at
-          recentGame = game
+    if (state.user.games) {
+      if (state.user.games.length !== 0) {
+        state.user.games.forEach(game => {
+          if (game.updated_at > time && game.playCount > 0) {
+            time = game.updated_at
+            recentGame = game
+          }
+        })
+        if (recentGame.itemInfo) {
+          return recentGame
         }
-      })
-      return recentGame
+      }
+      return null
     }
-    return null
   }
 }
 export const users = {

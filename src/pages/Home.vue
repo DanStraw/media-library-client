@@ -84,7 +84,7 @@
             </v-card-title>
             <v-spacer></v-spacer>
             <v-card-text>
-              <div v-if="recentAlbum !== null">
+              <div v-if="recentAlbum">
                 <p>{{ recentAlbum.itemInfo.title }}</p>
                 <p>Listened: {{recentAlbum.updated_at | formatTime(`Do MMM 'YY h:mm a`) }}</p>
               </div>
@@ -146,7 +146,7 @@
                   <p>{{ item.countText }}: {{ item.updated_at | formatTime(`Do MM 'YY hh:mm a`) }}</p>
                 </div>
                 <div v-else>
-                  No {{ item.nullText }} Yes. Add Some
+                  No {{ item.nullText }} Yet. Add Some
                   <router-link :to="item.link">Here</router-link>
                 </div>
               </v-card-text>
