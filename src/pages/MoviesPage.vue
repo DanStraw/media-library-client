@@ -86,4 +86,7 @@ export default {
 .v-datatable__actions {
   justify-content: center !important;
 }
+.v-snack__content {
+  justify-content: center !important;
+}
 </style>

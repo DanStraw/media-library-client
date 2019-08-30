@@ -15,107 +15,35 @@
       <v-layout
         justify-space-around
         row
+        wrap
       >
         <v-flex
-          md3
-          xs12
+          :key="item.countText"
+          md5
+          py-2
+          v-for="item in recentItems"
         >
-          <v-card>
+          <v-card height="180">
             <v-card-title
-              class="justify-center title"
+              class="justify-center title card-title"
               primary-title
-            >
-              <span class="card-title">Most Recently Viewed Movie</span>
-            </v-card-title>
+              v-if="item"
+            >{{ item.header }}</v-card-title>
             <v-spacer></v-spacer>
             <v-card-text>
-              <div v-if="recentMovie">
-                <p>{{recentMovie.itemInfo.title}}</p>
-                <p>Viewed: {{recentMovie.updated_at | formatTime(`Do MMM 'YY h:mm a`) }}</p>
+              <div
+                class="subtitle-1"
+                v-if="item.info"
+              >
+                <p>{{ item.info.itemInfo.title }}</p>
+                <p>{{ item.countText }}: {{ item.updated_at | formatTime(`Do MM 'YY hh:mm a`) }}</p>
               </div>
-              <div v-else>
-                No Movies Yet. Add Some
-                <router-link to="/movies">Here</router-link>
-              </div>
-            </v-card-text>
-          </v-card>
-        </v-flex>
-
-        <v-flex
-          md3
-          xs12
-        >
-          <v-card>
-            <v-card-title
-              class="justify-center title"
-              primary-title
-            >
-              <span class="card-title">Most Recently Read Book</span>
-            </v-card-title>
-            <v-spacer></v-spacer>
-            <v-card-text class="text-center">
-              <div v-if="recentBook">
-                <p>{{ recentBook.itemInfo.title }}</p>
-                <p>Read: {{recentBook.updated_at | formatTime(`Do MMM 'YY h:mm a`) }}</p>
-              </div>
-              <div v-else>
-                No Books Yet. Add Some
-                <router-link to="/books">Here</router-link>
-              </div>
-            </v-card-text>
-          </v-card>
-        </v-flex>
-      </v-layout>
-      <v-layout
-        justify-space-around
-        pt-5
-        row
-      >
-        <v-flex
-          md3
-          xs12
-        >
-          <v-card class="text-center">
-            <v-card-title
-              class="justify-center title"
-              primary-title
-            >
-              <span class="card-title">Most Recent Album Listened To</span>
-            </v-card-title>
-            <v-spacer></v-spacer>
-            <v-card-text>
-              <div v-if="recentAlbum">
-                <p>{{ recentAlbum.itemInfo.title }}</p>
-                <p>Listened: {{recentAlbum.updated_at | formatTime(`Do MMM 'YY h:mm a`) }}</p>
-              </div>
-              <div v-else>
-                No Albums Yet. Add Some
-                <router-link to="/albums">Here</router-link>
-              </div>
-            </v-card-text>
-          </v-card>
-        </v-flex>
-
-        <v-flex
-          md3
-          xs12
-        >
-          <v-card>
-            <v-card-title
-              class="justify-center title"
-              primary-title
-            >
-              <span class="card-title">Most Recently Played Game</span>
-            </v-card-title>
-            <v-spacer></v-spacer>
-            <v-card-text>
-              <div v-if="recentGame">
-                <p>{{ recentGame.itemInfo.title }}</p>
-                <p>Played: {{recentGame.updated_at | formatTime(`Do MMM 'YY h:mm a`) }}</p>
-              </div>
-              <div v-else>
-                No Games Yet. Add Some
-                <router-link to="/games">Here</router-link>
+              <div
+                class="headline"
+                v-else
+              >
+                No {{ item.nullText }} Yet. Add Some
+                <router-link :to="item.link">Here</router-link>
               </div>
             </v-card-text>
           </v-card>
@@ -123,35 +51,76 @@
       </v-layout>
     </v-container>
     <v-container class="hidden-md-and-up">
-      <v-carousel>
+      <v-carousel height="450">
         <v-carousel-item
           :key="item.countText"
+          class="grey lighten-3"
           v-for="item in recentItems"
         >
-          <v-sheet
-            color="primary"
-            height="100%"
-            tile
+          <v-layout
+            justify-center
+            pt-4
+            row
+            wrap
           >
-            <v-card
-              class="justify-center"
-              color="secondary"
-              height="100%"
+            <v-flex
+              class="display-1"
+              sm7
+              xs12
+            >{{ item.header }}</v-flex>
+          </v-layout>
+          <v-layout
+            justify-space-around
+            pt-3
+            row
+            v-if="item.info"
+            wrap
+          >
+            <v-flex
+              class="title"
+              sm5
+              v-if="item.info"
+              xs12
             >
-              <v-card-title class="justify-center display-1">{{ item.header }}</v-card-title>
-              <v-spacer></v-spacer>
-              <v-card-text class="justify-center headline">
-                <div v-if="item.info">
-                  <p>{{ item.info.itemInfo.title }}</p>
-                  <p>{{ item.countText }}: {{ item.updated_at | formatTime(`Do MM 'YY hh:mm a`) }}</p>
-                </div>
-                <div v-else>
-                  No {{ item.nullText }} Yet. Add Some
-                  <router-link :to="item.link">Here</router-link>
-                </div>
-              </v-card-text>
-            </v-card>
-          </v-sheet>
+              <p>{{ item.info.itemInfo.title }}</p>
+              <p>{{ item.countText }}: {{ item.updated_at | formatTime(`Do MM 'YY hh:mm a`) }}</p>
+            </v-flex>
+            <v-flex
+              sm5
+              v-if="item.info"
+              xs12
+            >
+              <v-img
+                :src="item.info.itemInfo.image"
+                height="200"
+                v-if="item.countText !== 'Viewed'"
+                width="200"
+              ></v-img>
+              <v-img
+                :src="`http://image.tmdb.org/t/p/w185${item.info.itemInfo.image}`"
+                else
+                height="270"
+                width="200"
+              ></v-img>
+            </v-flex>
+          </v-layout>
+          <v-layout
+            justify-space-around
+            mt-5
+            pt-5
+            row
+            v-else
+            wrap
+          >
+            <v-flex
+              class="headline"
+              sm8
+              xs12
+            >
+              No {{ item.nullText }} Yet. Add Some
+              <router-link :to="item.link">Here</router-link>
+            </v-flex>
+          </v-layout>
         </v-carousel-item>
       </v-carousel>
     </v-container>
