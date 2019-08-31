@@ -40,7 +40,9 @@ const state = {
   snackbar: {
     show: false,
     addedBook: null,
-    timeout: 2000
+    timeout: 2000,
+    errorMessage: '',
+    color: 'success'
   },
   formLoading: false
 }
@@ -61,9 +63,22 @@ const mutations = {
       state.dialog = false
       state.snackbar.show = true
       state.formLoading = false
+      state.snackbar.errorMessage = ''
+      state.snackbar.color = 'success'
+      state.bookFormDetails.datalistItems = []
     })
       .then(res => {
         this.dispatch('getUser', 'books')
+      }).catch(() => {
+        state.snackbar.itemTitle = ''
+        state.newBook.title = ''
+        state.newBook.format = ''
+        state.dialog = false
+        state.snackbar.show = true
+        state.formLoading = false
+        state.snackbar.errorMessage = 'Item Could Not Be Added'
+        state.snackbar.color = 'error'
+        state.bookFormDetails.datalistItems = []
       })
   },
   /* eslint-disable-next-line */

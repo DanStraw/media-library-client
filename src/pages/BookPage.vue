@@ -99,9 +99,7 @@
 export default {
   components: {},
   /* eslint-disable-next-line */
-  beforeCreate() {},
-  /* eslint-disable-next-line */
-  mounted() {
+  beforeCreate() {
     this.$store.dispatch('getUser', 'books')
     this.$store.dispatch('setBookID', this.$route.params.bookID)
   },

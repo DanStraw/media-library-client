@@ -40,7 +40,9 @@ const state = {
   snackbar: {
     show: false,
     itemTitle: null,
-    timeout: 2000
+    timeout: 2000,
+    errorMessage: '',
+    color: 'success'
   },
   formLoading: false
 }
@@ -61,9 +63,22 @@ const mutations = {
       state.dialog = false
       state.snackbar.show = true
       state.formLoading = false
+      state.snackbar.errorMessage = ''
+      state.snackbar.color = 'success'
+      state.gameFormDetails.datalistItems = []
     })
       .then(res => {
         this.dispatch('getUser', 'games')
+      }).catch(() => {
+        state.formLoading = false
+        state.newGame.title = ''
+        state.newGame.format = ''
+        state.snackbar.errorMessage = 'Item Could Not Be Added'
+        state.snackbar.show = true
+        state.snackbar.itemTitle = ''
+        state.dialog = false
+        state.snackbar.color = 'error'
+        state.gameFormDetails.datalistItems = []
       })
   },
   /* eslint-disable-next-line */

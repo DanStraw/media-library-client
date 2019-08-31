@@ -92,12 +92,12 @@
 export default {
   components: {},
   /* eslint-disable-next-line */
-  beforeCreate() {},
-  /* eslint-disable-next-line */
-  mounted() {
+  beforeCreate() {
     this.$store.dispatch('getUser', 'albums')
     this.$store.dispatch('setAlbumID', this.$route.params.albumID)
   },
+  /* eslint-disable-next-line */
+  mounted() {},
   methods: {},
   computed: {
     /* eslint-disable-next-line */

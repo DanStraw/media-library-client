@@ -89,10 +89,12 @@ export default {
   /* eslint-disable-next-line */
   beforeCreate() {},
   /* eslint-disable-next-line */
-  mounted() {
+  beforeMount() {
     this.$store.dispatch('getUser', 'movies')
     this.$store.dispatch('setMovieID', this.$route.params.movieID)
   },
+  /* eslint-disable-next-line */
+  mounted() {},
   methods: {},
   computed: {
     /* eslint-disable-next-line */

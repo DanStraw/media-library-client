@@ -40,7 +40,9 @@ const state = {
   snackbar: {
     show: false,
     itemTitle: null,
-    timeout: 2000
+    timeout: 2000,
+    errorMessage: '',
+    color: 'success'
   },
   formLoading: false
 }
@@ -61,11 +63,22 @@ const mutations = {
       state.dialog = false
       state.snackbar.show = true
       state.formLoading = false
+      state.snackbar.errorMessage = ''
+      state.snackbar.color = 'success'
+      state.movieFormDetails.datalistItems = []
     })
       .then(res => {
         this.dispatch('getUser', 'movies')
-      }).catch(err => {
-        console.log('added to movie err:', err)
+      }).catch((e) => {
+        state.formLoading = false
+        state.newMovie.title = ''
+        state.newMovie.format = ''
+        state.snackbar.errorMessage = 'Item Could Not Be Added'
+        state.snackbar.show = true
+        state.snackbar.itemTitle = ''
+        state.dialog = false
+        state.snackbar.color = 'error'
+        state.movieFormDetails.datalistItems = []
       })
   },
   /* eslint-disable-next-line */

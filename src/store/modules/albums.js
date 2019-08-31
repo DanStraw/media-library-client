@@ -40,7 +40,9 @@ const state = {
   snackbar: {
     show: false,
     itemTitle: null,
-    timeout: 2000
+    timeout: 2000,
+    errorMessage: '',
+    color: 'success'
   },
   formLoading: false
 }
@@ -61,9 +63,22 @@ const mutations = {
       state.dialog = false
       state.snackbar.show = true
       state.formLoading = false
+      state.snackbar.errorMessage = ''
+      state.snackbar.color = 'success'
+      state.albumFormDetails.datalistItems = []
     })
       .then(res => {
         this.dispatch('getUser', 'albums')
+      }).catch(() => {
+        state.snackbar.itemTitle = ''
+        state.newAlbum.title = ''
+        state.newAlbum.format = ''
+        state.dialog = false
+        state.snackbar.show = true
+        state.formLoading = false
+        state.snackbar.errorMessage = 'Item Could Not Be Added'
+        state.snackbar.color = 'error'
+        state.albumFormDetails.datalistItems = []
       })
   },
   /* eslint-disable-next-line */

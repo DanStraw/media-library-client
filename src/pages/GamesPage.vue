@@ -1,14 +1,21 @@
 <template>
   <div>
     <v-snackbar
+      :color="snackbar.color"
       :timeout="snackbar.timeout"
-      color="success"
       top
       v-model="snackbar.show"
     >
-      <span>
+      <span
+        class="text-center"
+        v-if="snackbar.itemTitle"
+      >
         <span class="font-italic">{{ snackbar.itemTitle }}</span>&nbsp;added to Library
       </span>
+      <span
+        class="text-center"
+        v-if="snackbar.errorMessage"
+      >{{ snackbar.errorMessage }}</span>
     </v-snackbar>
     <AddForm
       :formDetails="getFormDetails"
@@ -85,5 +92,9 @@ export default {
   justify-content: center !important;
   align-content: center !important;
   font-size: 3rem;
+}
+.text-center {
+  width: 100%;
+  text-align: center;
 }
 </style>

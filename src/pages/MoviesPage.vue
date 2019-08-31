@@ -1,14 +1,21 @@
 <template>
   <div>
     <v-snackbar
+      :color="snackbar.color"
       :timeout="snackbar.timeout"
-      color="success"
       top
       v-model="snackbar.show"
     >
-      <span>
+      <span
+        class="text-center"
+        v-if="snackbar.itemTitle"
+      >
         <span class="font-italic">{{ snackbar.itemTitle }}</span>&nbsp;added to Library
       </span>
+      <span
+        class="text-center"
+        v-if="snackbar.errorMessage"
+      >{{ snackbar.errorMessage }}</span>
     </v-snackbar>
     <AddForm
       :formDetails="getFormDetails"
@@ -67,7 +74,6 @@ export default {
     },
     /* eslint-disable-next-line */
     snackbar() {
-      console.log('snackbar:', this.$store.getters.movieSnackbar)
       return this.$store.getters.movieSnackbar
     },
     /* eslint-disable-next-line */
@@ -86,7 +92,8 @@ export default {
 .v-datatable__actions {
   justify-content: center !important;
 }
-.v-snack__content {
-  justify-content: center !important;
+.text-center {
+  width: 100%;
+  text-align: center;
 }
 </style>

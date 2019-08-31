@@ -139,7 +139,7 @@ export default {
   /* eslint-disable-next-line */
   beforeCreate() {},
   /* eslint-disable-next-line */
-  mounted() {
+  beforeMount() {
     this.$store.dispatch('getUser', 'games')
     this.$store.dispatch('setGameID', this.$route.params.gameID)
   },
