@@ -98,8 +98,8 @@
               ></v-img>
               <v-img
                 :src="`http://image.tmdb.org/t/p/w185${item.info.itemInfo.image}`"
-                else
                 height="270"
+                v-else
                 width="200"
               ></v-img>
             </v-flex>

@@ -57,7 +57,16 @@ const mutations = {
     }
     state.formLoading = true
     gameService.addGame(newGame).then(res => {
-      state.snackbar.itemTitle = res
+      if (res.status !== 201) {
+        switch (res.status) {
+          case 409:
+          case 411:
+            throw Error(res.data)
+          default:
+            throw Error('Item Could Not Be Added')
+        }
+      }
+      state.snackbar.itemTitle = res.data
       state.newGame.title = ''
       state.newGame.format = ''
       state.dialog = false
@@ -69,11 +78,11 @@ const mutations = {
     })
       .then(res => {
         this.dispatch('getUser', 'games')
-      }).catch(() => {
+      }).catch(e => {
         state.formLoading = false
         state.newGame.title = ''
         state.newGame.format = ''
-        state.snackbar.errorMessage = 'Item Could Not Be Added'
+        state.snackbar.errorMessage = e.message
         state.snackbar.show = true
         state.snackbar.itemTitle = ''
         state.dialog = false
@@ -93,7 +102,7 @@ const mutations = {
   /* eslint-disable-next-line */
   'GAME_DATALIST'(state) {
     if (state.newGame.title.length < 3) {
-      return console.log('query too short')
+      return false
     }
     gameService.generateDatalist(state.newGame.title).then(res => {
       state.gameFormDetails.showDatalist = false

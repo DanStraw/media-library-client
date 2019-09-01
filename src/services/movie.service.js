@@ -3,9 +3,9 @@ import axios from 'axios'
 export default {
   /* eslint-disable-next-line */
   addMovie(movie) {
-    return axios.post('/api/movies', movie).then(res => {
-      return res.data
-    })
+    return axios.post('/api/movies', movie)
+      .then(res => res)
+      .catch(e => e.response)
   },
   /* eslint-disable-next-line */
   generateDatalist(title) {

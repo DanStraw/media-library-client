@@ -90,8 +90,8 @@
           md6
           xs12
         >
-          <div class="caption grey--text">Franchise</div>
-          <div>{{ game.itemInfo.franchise }}</div>
+          <div class="caption grey--text">Rating</div>
+          <div>{{ game.itemInfo.rating.toFixed(2) }}</div>
         </v-flex>
 
         <v-flex

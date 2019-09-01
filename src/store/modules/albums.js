@@ -57,7 +57,16 @@ const mutations = {
     }
     state.formLoading = true
     albumService.addAlbum(newAlbum).then(res => {
-      state.snackbar.itemTitle = res
+      if (res.status !== 201) {
+        switch (res.status) {
+          case 409:
+          case 411:
+            throw Error(res.data)
+          default:
+            throw Error('Item Could Not Be Added')
+        }
+      }
+      state.snackbar.itemTitle = res.data
       state.newAlbum.title = ''
       state.newAlbum.format = ''
       state.dialog = false
@@ -69,14 +78,14 @@ const mutations = {
     })
       .then(res => {
         this.dispatch('getUser', 'albums')
-      }).catch(() => {
+      }).catch(e => {
         state.snackbar.itemTitle = ''
         state.newAlbum.title = ''
         state.newAlbum.format = ''
         state.dialog = false
         state.snackbar.show = true
         state.formLoading = false
-        state.snackbar.errorMessage = 'Item Could Not Be Added'
+        state.snackbar.errorMessage = e.message
         state.snackbar.color = 'error'
         state.albumFormDetails.datalistItems = []
       })
@@ -93,7 +102,7 @@ const mutations = {
   /* eslint-disable-next-line */
   'ALBUM_DATALIST'(state) {
     if (state.newAlbum.title.length < 3) {
-      return console.log('query too short')
+      return false
     }
     albumService.generateDatalist(state.newAlbum.title).then(res => {
       state.albumFormDetails.showDatalist = false

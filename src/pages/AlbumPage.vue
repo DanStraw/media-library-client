@@ -58,6 +58,8 @@
             <img
               :src="`${album.itemInfo.image}`"
               alt
+              height="300"
+              width="300"
             />
           </div>
         </v-flex>

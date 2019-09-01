@@ -57,7 +57,16 @@ const mutations = {
     }
     state.formLoading = true
     movieService.addMovie(newMovie).then(res => {
-      state.snackbar.itemTitle = res
+      if (res.status !== 201) {
+        switch (res.status) {
+          case 409:
+          case 411:
+            throw Error(res.data)
+          default:
+            throw Error('Item Could Not Be Added')
+        }
+      }
+      state.snackbar.itemTitle = res.data
       state.newMovie.title = ''
       state.newMovie.format = ''
       state.dialog = false
@@ -69,11 +78,11 @@ const mutations = {
     })
       .then(res => {
         this.dispatch('getUser', 'movies')
-      }).catch((e) => {
+      }).catch(e => {
         state.formLoading = false
         state.newMovie.title = ''
         state.newMovie.format = ''
-        state.snackbar.errorMessage = 'Item Could Not Be Added'
+        state.snackbar.errorMessage = e.message
         state.snackbar.show = true
         state.snackbar.itemTitle = ''
         state.dialog = false
@@ -84,7 +93,7 @@ const mutations = {
   /* eslint-disable-next-line */
   'MOVIE_DATALIST'(state) {
     if (state.newMovie.title.length < 3) {
-      return console.log('query too short')
+      return false
     }
     /* eslint-disable-next-line */
     movieService.generateDatalist(state.newMovie.title).then(res => {

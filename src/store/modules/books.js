@@ -57,7 +57,17 @@ const mutations = {
     }
     state.formLoading = true
     bookService.addBook(newBook).then(res => {
-      state.snackbar.itemTitle = res
+      console.log('res.data:', res.data, res.status)
+      if (res.status !== 201) {
+        switch (res.status) {
+          case 409:
+          case 411:
+            throw Error(res.data)
+          default:
+            throw Error('Item Could Not Be Added')
+        }
+      }
+      state.snackbar.itemTitle = res.data
       state.newBook.title = ''
       state.newBook.format = ''
       state.dialog = false
@@ -69,14 +79,14 @@ const mutations = {
     })
       .then(res => {
         this.dispatch('getUser', 'books')
-      }).catch(() => {
+      }).catch((e) => {
         state.snackbar.itemTitle = ''
         state.newBook.title = ''
         state.newBook.format = ''
         state.dialog = false
         state.snackbar.show = true
         state.formLoading = false
-        state.snackbar.errorMessage = 'Item Could Not Be Added'
+        state.snackbar.errorMessage = e.message
         state.snackbar.color = 'error'
         state.bookFormDetails.datalistItems = []
       })
@@ -93,7 +103,7 @@ const mutations = {
   /* eslint-disable-next-line */
   'BOOK_DATALIST'(state) {
     if (state.newBook.title.length < 3) {
-      return console.log('query too short')
+      return false
     }
     /* eslint-disable-next-line */
     bookService.generateDatalist(state.newBook.title).then(res => {

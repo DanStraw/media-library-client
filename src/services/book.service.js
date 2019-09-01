@@ -3,9 +3,9 @@ import axios from 'axios'
 export default {
   /* eslint-disable-next-line */
   addBook(book) {
-    return axios.post('/api/books', book).then(res => {
-      return res.data
-    })
+    return axios.post('/api/books', book)
+      .then(res => res)
+      .catch(e => e.response)
   },
   /* eslint-disable-next-line */
   generateDatalist(title) {
