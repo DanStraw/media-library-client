@@ -36,7 +36,7 @@
                 v-if="item.info"
               >
                 <p>{{ item.info.itemInfo.title }}</p>
-                <p>{{ item.countText }}: {{ item.updated_at | formatTime(`Do MM 'YY hh:mm a`) }}</p>
+                <p>{{ item.countText }}: {{ item.info.updated_at | formatTime(`Do MM 'YY hh:mm a`) }}</p>
               </div>
               <div
                 class="headline"
@@ -64,9 +64,9 @@
             wrap
           >
             <v-flex
-              class="display-1"
+              class="headline"
               sm7
-              xs12
+              xs10
             >{{ item.header }}</v-flex>
           </v-layout>
           <v-layout
@@ -78,17 +78,17 @@
           >
             <v-flex
               class="title"
-              sm5
+              sm4
               v-if="item.info"
-              xs12
+              xs19
             >
               <p>{{ item.info.itemInfo.title }}</p>
-              <p>{{ item.countText }}: {{ item.updated_at | formatTime(`Do MM 'YY hh:mm a`) }}</p>
+              <p>{{ item.countText }}: {{ item.info.updated_at | formatTime(`Do MM 'YY hh:mm a`) }}</p>
             </v-flex>
             <v-flex
-              sm5
+              sm4
               v-if="item.info"
-              xs12
+              xs19
             >
               <v-img
                 :src="item.info.itemInfo.image"
@@ -97,7 +97,7 @@
                 width="200"
               ></v-img>
               <v-img
-                :src="`http://image.tmdb.org/t/p/w185${item.info.itemInfo.image}`"
+                :src="`https://image.tmdb.org/t/p/w185${item.info.itemInfo.image}`"
                 height="270"
                 v-else
                 width="200"
