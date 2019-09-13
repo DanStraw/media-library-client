@@ -12,6 +12,7 @@ import GamePage from '@/pages/GamePage.vue'
 import MoviesPage from '@/pages/MoviesPage.vue'
 import MoviePage from '@/pages/MoviePage'
 import ErrorPage from '@/pages/Error.vue'
+import SettingsPage from '@/pages/Settings.vue'
 
 Vue.use(Router)
 
@@ -106,11 +107,19 @@ let router = new Router({
       }
     },
     {
+      path: '/settings',
+      name: 'SettingsPage',
+      component: SettingsPage,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
       path: '/error',
       name: 'ErrorPage',
       component: ErrorPage,
       meta: {
-        requiresAuth: true
+        guest: true
       }
     }
   ]

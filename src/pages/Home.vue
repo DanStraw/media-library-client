@@ -7,7 +7,10 @@
         row
       >
         <v-flex md7>
-          <v-card>
+          <v-card
+            :class="color"
+            class="lighten-3"
+          >
             <v-card-title class="display-1 justify-center">{{ user.username }}&#39;s Media Summary</v-card-title>
           </v-card>
         </v-flex>
@@ -23,9 +26,13 @@
           py-2
           v-for="item in recentItems"
         >
-          <v-card height="180">
+          <v-card
+            class="grey lighten-4"
+            height="180"
+          >
             <v-card-title
-              class="justify-center title card-title"
+              :class="color"
+              class="justify-center title card-title pa-4 lighten-4"
               primary-title
               v-if="item"
             >{{ item.header }}</v-card-title>
@@ -53,8 +60,9 @@
     <v-container class="hidden-md-and-up">
       <v-carousel height="450">
         <v-carousel-item
+          :class="color"
           :key="item.countText"
-          class="grey lighten-3"
+          class="lighten-4"
           v-for="item in recentItems"
         >
           <v-layout
@@ -190,6 +198,10 @@ export default {
           link: '/games'
         }
       ]
+    },
+    /* eslint-disable-next-line */
+    color() {
+      return this.$store.getters.userColor || 'success'
     }
   },
   /* eslint-disable-next-line */

@@ -1,6 +1,10 @@
 <template>
   <v-app>
-    <v-toolbar app>
+    <v-toolbar
+      :class="color"
+      app
+      class="lighten-3"
+    >
       <v-toolbar-title class="headline text-uppercase">
         <span>My Media</span>
         <span class="font-weight-light">Library</span>
@@ -33,18 +37,40 @@
           </v-list-tile>
         </v-list>
       </v-menu>
-
-      <v-toolbar-items v-if="!guestRoute">
-        <v-btn
-          @click="handleLogout"
-          flat
-        >
-          <v-icon left>exit_to_app</v-icon>
-          <span>Logout</span>
-        </v-btn>
-      </v-toolbar-items>
+      <v-menu
+        offset-y
+        v-if="!guestRoute"
+      >
+        <template v-slot:activator="{ on }">
+          <v-btn
+            flat
+            v-on="on"
+          >
+            <v-icon left>expand_more</v-icon>
+            <span>Profile</span>
+          </v-btn>
+        </template>
+        <v-list>
+          <v-list-tile
+            router
+            to="/settings"
+          >
+            <v-list-tile-title>
+              <v-icon left>settings</v-icon>
+              <span>Settings</span>
+            </v-list-tile-title>
+          </v-list-tile>
+          <v-list-tile @click="handleLogout">
+            <v-list-tile-title>
+              <v-icon left>exit_to_app</v-icon>
+              <span>Logout</span>
+            </v-list-tile-title>
+          </v-list-tile>
+        </v-list>
+      </v-menu>
+      <v-toolbar-items></v-toolbar-items>
     </v-toolbar>
-    <v-content>
+    <v-content class="grey lighten-1">
       <v-container>
         <router-view
           mt5
@@ -52,20 +78,24 @@
         ></router-view>
       </v-container>
     </v-content>
-    <v-footer>
-      <v-content>
-        <v-layout
-          justify-center
-          row
-        >
-          <v-flex
-            md4
-            xs12
-          >
-            <div>This product uses the TMDb API but is not endorsed or certified by TMDb.</div>
-          </v-flex>
-        </v-layout>
-      </v-content>
+    <v-footer
+      dark
+      height="auto"
+    >
+      <v-card
+        :class="color"
+        class="flex lighten-3 justify-center"
+        flat
+        tile
+      >
+        <v-card-title class="justify-center black--text pb-0">
+          &copy;{{ time | formatTime('YYYY') }} &nbsp;
+          <strong>Daniel Strawbridge</strong>
+        </v-card-title>
+        <v-card-actions
+          class="caption grey--text justify-center"
+        >This product uses the TMDb API but is not endorsed or certified by TMDb.</v-card-actions>
+      </v-card>
     </v-footer>
   </v-app>
 </template>
@@ -96,6 +126,14 @@ export default {
     /* eslint-disable-next-line */
     guestRoute() {
       return this.$router.app._route.meta.guest
+    },
+    /* eslint-disable-next-line */
+    time() {
+      return new Date()
+    },
+    /* eslint-disable-next-line */
+    color() {
+      return this.$store.getters.userColor || 'success'
     }
   },
   /* eslint-disable-next-line */

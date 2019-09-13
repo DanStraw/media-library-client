@@ -35,5 +35,33 @@ export default {
   /* eslint-disable-next-line */
   deleteItem(user, itemId, mediaType) {
     return axios.delete('/api/user/deleteItem', { data: { user, _item_id: itemId, media_type: mediaType } })
+  },
+  /* eslint-disable-next-line */
+  checkOldPassword(user, token, oldPassword) {
+    return axios.put('/api/user/oldPassword', { user, token, oldPassword })
+      .then(res => res)
+      .catch(e => e.response)
+  },
+  /* eslint-disable-next-line */
+  updatePassword(info) {
+    return axios.put('/api/user/updatePassword', { ...info })
+      .then(res => res)
+      .catch(e => e.response)
+  },
+  /* eslint-disable-next-line */
+  updateColor(info) {
+    return axios.put('/api/user/color', { ...info })
+      .then(res => {
+        return res
+      })
+      .catch(e => {
+        return e.response
+      })
+  },
+  /* eslint-disable-next-line */
+  deleteUser(info) {
+    return axios.delete(`/api/user/${info.user._id}/${info.token}`)
+      .then(res => res)
+      .catch(e => e.response)
   }
 }

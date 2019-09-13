@@ -8,7 +8,11 @@ const state = {
     lastName: '',
     email: '',
     password: '',
-    passwordConfirm: ''
+    passwordConfirm: '',
+    movies: [],
+    albums: [],
+    games: [],
+    books: []
   },
   user: {},
   passwordField: {
@@ -16,7 +20,18 @@ const state = {
     type: 'password'
   },
   loginError: null,
-  signupError: null
+  signupError: null,
+  passwordForm: {
+    oldPassword: '',
+    newPassword: '',
+    newPasswordConfirm: '',
+    oldPasswordError: '',
+    newPasswordError: ''
+  },
+  deleteForm: {
+    username: ''
+  },
+  selectedColor: ''
 }
 
 const mutations = {
@@ -50,6 +65,7 @@ const mutations = {
     }
     userService.getUser(user._id, token, mediaType).then(res => {
       state.user = res.data
+      state.selectedColor = res.data.color
       return state.user
     }).catch(e => {
       localStorage.clear()
@@ -79,7 +95,7 @@ const mutations = {
   },
   /* eslint-disable-next-line */
   'LOGOUT_USER'(state) {
-    const user = {}
+    let user = {}
     user.user = state.user
     user.token = localStorage.getItem('mml_jwt')
     userService.logoutUser(user).then(res => {
@@ -99,6 +115,68 @@ const mutations = {
   'TOGGLE_PASSWORD_VIEW'(state) {
     state.passwordField.type = state.passwordField.type === 'password' ? 'text' : 'password'
     state.passwordField.icon = state.passwordField.icon === 'visibility' ? 'visibility_off' : 'visibility'
+  },
+  /* eslint-disable-next-line */
+  'CHECK_OLD_PASSWORD'(state) {
+    const user = state.user
+    const token = localStorage.getItem('mml_jwt')
+    const oldPassword = state.passwordForm.oldPassword
+    userService.checkOldPassword(user, token, oldPassword).then(res => {
+      if (res.status === 401) {
+        state.passwordForm.oldPasswordError = 'Old Password Incorrect'
+      } else {
+        state.passwordForm.oldPasswordError = ''
+      }
+    })
+  },
+  /* eslint-disable-next-line */
+  'HANDLE_PASSWORD_UPDATE'(state) {
+    let info = {
+      user: state.user,
+      token: localStorage.getItem('mml_jwt'),
+      oldPassword: state.passwordForm.oldPassword,
+      newPassword: state.passwordForm.newPassword
+    }
+    userService.updatePassword(info).then(res => {
+      state.passwordForm.oldPassword = ''
+      state.passwordForm.newPassword = ''
+      state.passwordForm.newPasswordConfirm = ''
+    })
+  },
+  /* eslint-disable-next-line */
+  'UPDATE_COLOR'(state, color) {
+    const info = {
+      color,
+      userId: state.user._id,
+      token: localStorage.getItem('mml_jwt')
+    }
+    userService.updateColor(info).then(res => {
+      state.user = res.data
+    }).catch(e => {
+      console.log(e)
+    })
+  },
+  /* eslint-disable-next-line */
+  'HANDLE_USER_DELETE'(state) {
+    let info = {
+      user: state.user,
+      token: localStorage.getItem('mml_jwt')
+    }
+    userService.deleteUser(info)
+      .then(res => {
+        if (res.status !== 204) {
+          return console.log(res)
+        }
+        localStorage.removeItem('mml_jwt')
+        localStorage.removeItem('mml_user')
+        state.deleteForm.username = ''
+      }).then(res => {
+        router.push('/signup')
+      })
+  },
+  /* eslint-disable-next-line */
+  'SET_SELECTED_COLOR'(state, color) {
+    state.selectedColor = color
   }
 }
 
@@ -121,6 +199,21 @@ const actions = {
   },
   togglePasswordVisibility: ({ commit }) => {
     commit('TOGGLE_PASSWORD_VIEW')
+  },
+  checkOldPassword: ({ commit }) => {
+    commit('CHECK_OLD_PASSWORD')
+  },
+  handlePasswordUpdate: ({ commit }) => {
+    commit('HANDLE_PASSWORD_UPDATE')
+  },
+  updateColor: ({ commit }, color) => {
+    commit('UPDATE_COLOR', color)
+  },
+  handleUserDelete: ({ commit }) => {
+    commit('HANDLE_USER_DELETE')
+  },
+  setSelectedColor: ({ commit }, color) => {
+    commit('SET_SELECTED_COLOR', color)
   }
 }
 
@@ -205,7 +298,14 @@ const getters = {
       }
       return null
     }
-  }
+  },
+  passwordForm: state => state.passwordForm,
+  oldPasswordError: state => {
+    return state.passwordForm.oldPasswordError
+  },
+  deleteForm: state => state.deleteForm,
+  userColor: state => state.user.color,
+  selectedColor: state => state.selectedColor
 }
 export const users = {
   state,

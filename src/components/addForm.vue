@@ -1,10 +1,14 @@
 <template>
-  <v-layout row>
+  <v-layout
+    justify-center
+    row
+  >
     <v-flex
-      md2
-      mt1
-      offset-xs6
-      xs6
+      lg4
+      mb-1
+      md6
+      sm10
+      xs12
     >
       <v-dialog
         v-model="dialog"
@@ -12,9 +16,9 @@
       >
         <template v-slot:activator="{ on }">
           <v-btn
-            class="white--text"
-            color="teal lighten-2"
-            flat
+            :color="`${color} lighten-3`"
+            block
+            class="black--text"
             v-on="on"
           >Add {{ formDetails.header }}</v-btn>
         </template>
@@ -111,6 +115,10 @@ export default {
     /* eslint-disable-next-line */
     handleLoading() {
       return this.$store.getters[`handle${this.mediaType}Loading`]
+    },
+    /* eslint-disable-next-line */
+    color() {
+      return this.$store.getters.userColor || 'success'
     }
   },
   /* eslint-disable-next-line */

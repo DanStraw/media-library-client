@@ -11,8 +11,8 @@
         <tr>
           <td class="text-xs">
             <v-btn
+              :color="color"
               :to="`/${mediaType.toLowerCase()}/${props.item._id}`"
-              color="green"
               flat
               router
             >{{ props.item.itemInfo.title }}</v-btn>
@@ -57,6 +57,12 @@ export default {
     /* eslint-disable-next-line */
     handleDelete(id) {
       this.$store.dispatch(`delete${this.mediaType}`, id)
+    }
+  },
+  computed: {
+    /* eslint-disable-next-line */
+    color() {
+      return this.$store.getters.userColor || 'success'
     }
   }
 }
