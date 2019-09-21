@@ -10,6 +10,7 @@
           <v-card
             :class="color"
             class="lighten-3"
+            elevation="6"
           >
             <v-card-title class="display-1 justify-center">{{ user.username }}&#39;s Media Summary</v-card-title>
           </v-card>
@@ -26,34 +27,55 @@
           py-2
           v-for="item in recentItems"
         >
-          <v-card
-            class="grey lighten-4"
-            height="180"
-          >
-            <v-card-title
-              :class="color"
-              class="justify-center title card-title pa-4 lighten-4"
-              primary-title
-              v-if="item"
-            >{{ item.header }}</v-card-title>
-            <v-spacer></v-spacer>
-            <v-card-text>
-              <div
-                class="subtitle-1"
-                v-if="item.info"
-              >
-                <p>{{ item.info.itemInfo.title }}</p>
-                <p>{{ item.countText }}: {{ item.info.updated_at | formatTime(`Do MM 'YY hh:mm a`) }}</p>
-              </div>
-              <div
-                class="headline"
-                v-else
-              >
-                No {{ item.nullText }} Yet. Add Some
-                <router-link :to="item.link">Here</router-link>
-              </div>
-            </v-card-text>
-          </v-card>
+          <v-hover v-slot:default="{ hover }">
+            <v-card
+              :elevation="hover ? 16 : 6"
+              :to="item.info ? `${item.link}/${item.info._id}` : '/'"
+              class="grey lighten-4"
+              height="180"
+              router
+            >
+              <v-card-title
+                :class="color"
+                class="justify-center title card-title pa-4 lighten-4"
+                primary-title
+                v-if="item"
+              >{{ item.header }}</v-card-title>
+              <v-spacer></v-spacer>
+              <v-card-text tag="button">
+                <div
+                  class="subtitle-1"
+                  v-if="item.info"
+                >
+                  <span class="item-info">
+                    <p>{{ item.info.itemInfo.title }}</p>
+                    <p>{{ item.countText }}: {{ item.info.updated_at | formatTime(`Do MM 'YY hh:mm a`) }}</p>
+                  </span>
+                  <span class="image">
+                    <v-img
+                      :src="item.info.itemInfo.image"
+                      height="50"
+                      v-if="item.countText !== 'Viewed'"
+                      width="50"
+                    ></v-img>
+                    <v-img
+                      :src="`https://image.tmdb.org/t/p/w185${item.info.itemInfo.image}`"
+                      height="70"
+                      v-else
+                      width="50"
+                    ></v-img>
+                  </span>
+                </div>
+                <div
+                  class="headline"
+                  v-else
+                >
+                  No {{ item.nullText }} Yet. Add Some
+                  <router-link :to="item.libLink">Here</router-link>
+                </div>
+              </v-card-text>
+            </v-card>
+          </v-hover>
         </v-flex>
       </v-layout>
     </v-container>
@@ -174,28 +196,32 @@ export default {
           header: 'Most Recently Viewed Movie',
           countText: 'Viewed',
           nullText: 'Movies Viewed',
-          link: '/movies'
+          libLink: '/movies',
+          link: '/movie'
         },
         {
           info: this.$store.getters.recentBook,
           header: 'Most Recently Read Book',
           countText: 'Read',
           nullText: 'Books Read',
-          link: '/books'
+          libLink: '/books',
+          link: '/book'
         },
         {
           info: this.$store.getters.recentAlbum,
           header: 'Most Recently Listened Album',
           countText: 'Listened',
           nullText: 'Albums Listed To',
-          link: '/albums'
+          libLink: '/albums',
+          link: '/album'
         },
         {
           info: this.$store.getters.recentGame,
           header: 'Most Recently Played Game',
           countText: 'Played',
           nullText: 'Games Played',
-          link: '/games'
+          libLink: '/games',
+          link: '/game'
         }
       ]
     },
@@ -219,9 +245,16 @@ ul {
   padding-top: 50px;
 }
 .card-title {
-  border-bottom: 1px black solid;
   padding-bottom: 10px;
   width: 100%;
   text-align: center;
+  border-bottom: 3px grey ridge;
+}
+.item-info {
+  width: 70%;
+  float: left;
+}
+.image {
+  width: 30%;
 }
 </style>
